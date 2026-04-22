@@ -1,0 +1,8 @@
+{
+  "name": "Mache Likidasyon",
+  "short_name": "Mache",
+  "start_url": "/Mache-likidasyon/index.html",
+  "display": "standalone",
+  "background_color": "#16a34a",
+  "theme_color": "#16a34a"
+}
