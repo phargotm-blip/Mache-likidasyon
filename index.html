@@ -1,1004 +1,468 @@
 <!DOCTYPE html>
 <html lang="ht">
 <head>
-  <meta charset="UTF-8">
-  <link rel="manifest" href="manifest.json"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Mache Likidasyon — Achte & Vann</title>
-  <meta name="theme-color" content="#16a34a"/>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
-  <style>
-    :root {
-      --green:#16a34a; --green-dark:#15803d; --green-light:#dcfce7;
-      --orange:#f97316; --red:#dc2626;
-      --bg:#f8fafc; --card:#ffffff; --border:#e2e8f0;
-      --text:#0f172a; --gray:#64748b; --light:#f1f5f9;
-    }
-    *{margin:0;padding:0;box-sizing:border-box;}
-    body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden;}
-
-    /* ── HEADER ── */
-    header{background:var(--green);padding:0;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(22,163,74,0.3);}
-    .header-inner{max-width:1100px;margin:0 auto;padding:0 1rem;height:56px;display:flex;align-items:center;justify-content:space-between;}
-    .logo{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;color:#fff;display:flex;align-items:center;gap:0.4rem;}
-    .logo-dot{width:8px;height:8px;background:var(--orange);border-radius:50%;display:inline-block;}
-    .header-actions{display:flex;gap:0.5rem;align-items:center;}
-    .lang-btn{background:rgba(255,255,255,0.2);border:none;color:#fff;font-family:'Syne',sans-serif;font-size:0.75rem;font-weight:600;padding:0.3rem 0.6rem;cursor:pointer;border-radius:4px;transition:background 0.2s;}
-    .lang-btn:hover,.lang-btn.active{background:rgba(255,255,255,0.35);}
-    .header-login{background:#fff;color:var(--green);font-family:'Syne',sans-serif;font-size:0.8rem;font-weight:700;border:none;padding:0.4rem 1rem;cursor:pointer;border-radius:4px;}
-
-    /* ── NAV TABS ── */
-    .nav-tabs{background:#fff;border-bottom:2px solid var(--border);position:sticky;top:56px;z-index:99;}
-    .nav-tabs-inner{max-width:1100px;margin:0 auto;display:flex;}
-    .tab-btn{flex:1;background:none;border:none;border-bottom:3px solid transparent;margin-bottom:-2px;padding:0.85rem 0;font-family:'Syne',sans-serif;font-size:0.85rem;font-weight:600;color:var(--gray);cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:0.4rem;}
-    .tab-btn.active{color:var(--green);border-bottom-color:var(--green);}
-
-    /* ── SECTIONS ── */
-    .section{display:none;max-width:1100px;margin:0 auto;padding:1.5rem 1rem;}
-    .section.active{display:block;}
-
-    /* ── SEARCH BAR ── */
-    .search-bar{display:flex;gap:0.5rem;margin-bottom:1.5rem;}
-    .search-bar input{flex:1;background:#fff;border:2px solid var(--border);padding:0.75rem 1rem;font-family:'DM Sans',sans-serif;font-size:0.9rem;outline:none;border-radius:8px;transition:border-color 0.2s;}
-    .search-bar input:focus{border-color:var(--green);}
-    .search-bar button{background:var(--green);color:#fff;border:none;padding:0.75rem 1.2rem;font-family:'Syne',sans-serif;font-size:0.85rem;font-weight:600;cursor:pointer;border-radius:8px;}
-
-    /* ── CATEGORY PILLS ── */
-    .cats{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.5rem;}
-    .cat-pill{background:var(--light);border:1px solid var(--border);color:var(--gray);font-family:'Syne',sans-serif;font-size:0.75rem;font-weight:600;padding:0.35rem 0.8rem;cursor:pointer;border-radius:20px;transition:all 0.2s;}
-    .cat-pill:hover,.cat-pill.active{background:var(--green);color:#fff;border-color:var(--green);}
-
-    /* ── PRODUCT GRID ── */
-    .product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem;}
-    .product-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;}
-    .product-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.1);}
-    .product-img{height:150px;background:var(--light);display:flex;align-items:center;justify-content:center;font-size:3.5rem;position:relative;}
-    .product-badge{position:absolute;top:8px;left:8px;background:var(--orange);color:#fff;font-family:'Syne',sans-serif;font-size:0.65rem;font-weight:700;padding:0.2rem 0.5rem;border-radius:4px;}
-    .product-body{padding:0.8rem;}
-    .product-name{font-family:'Syne',sans-serif;font-size:0.9rem;font-weight:700;margin-bottom:0.3rem;line-height:1.3;}
-    .product-seller{font-size:0.75rem;color:var(--gray);margin-bottom:0.5rem;}
-    .product-price{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:var(--green);}
-    .product-loc{font-size:0.72rem;color:var(--gray);margin-top:0.3rem;}
-
-    /* ── CHAT ── */
-    .chat-layout{display:grid;grid-template-columns:260px 1fr;gap:1rem;height:calc(100vh - 160px);}
-    .chat-sidebar{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;}
-    .chat-sidebar-header{padding:1rem;border-bottom:1px solid var(--border);font-family:'Syne',sans-serif;font-size:0.9rem;font-weight:700;}
-    .chat-list{flex:1;overflow-y:auto;}
-    .chat-item{display:flex;align-items:center;gap:0.8rem;padding:0.8rem 1rem;cursor:pointer;transition:background 0.15s;border-bottom:1px solid var(--border);}
-    .chat-item:hover,.chat-item.active{background:var(--green-light);}
-    .chat-avatar{width:40px;height:40px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:#fff;flex-shrink:0;}
-    .chat-info{flex:1;min-width:0;}
-    .chat-name{font-family:'Syne',sans-serif;font-size:0.85rem;font-weight:600;}
-    .chat-preview{font-size:0.75rem;color:var(--gray);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-    .chat-time{font-size:0.7rem;color:var(--gray);}
-    .chat-main{background:var(--card);border:1px solid var(--border);border-radius:12px;display:flex;flex-direction:column;overflow:hidden;}
-    .chat-header{padding:1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:0.8rem;}
-    .chat-messages{flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:0.8rem;}
-    .msg{max-width:70%;padding:0.7rem 1rem;border-radius:12px;font-size:0.88rem;line-height:1.5;}
-    .msg.me{background:var(--green);color:#fff;align-self:flex-end;border-bottom-right-radius:4px;}
-    .msg.them{background:var(--light);color:var(--text);align-self:flex-start;border-bottom-left-radius:4px;}
-    .msg-time{font-size:0.65rem;opacity:0.7;margin-top:0.3rem;}
-    .chat-input{padding:0.8rem;border-top:1px solid var(--border);display:flex;gap:0.5rem;}
-    .chat-input input{flex:1;background:var(--light);border:1px solid var(--border);padding:0.7rem 1rem;font-family:'DM Sans',sans-serif;font-size:0.9rem;outline:none;border-radius:8px;}
-    .chat-input button{background:var(--green);color:#fff;border:none;padding:0.7rem 1.2rem;font-size:1rem;cursor:pointer;border-radius:8px;}
-    .chat-empty{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:0.8rem;color:var(--gray);font-size:0.9rem;height:100%;}
-
-    /* ── DIRECTORY ── */
-    .dir-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem;}
-    .dir-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.2rem;transition:box-shadow 0.2s;}
-    .dir-card:hover{box-shadow:0 4px 16px rgba(0,0,0,0.08);}
-    .dir-top{display:flex;align-items:center;gap:0.8rem;margin-bottom:0.8rem;}
-    .dir-avatar{width:48px;height:48px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:700;color:#fff;flex-shrink:0;}
-    .dir-name{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;}
-    .dir-cat{font-size:0.75rem;color:var(--green);font-weight:600;}
-    .dir-info{font-size:0.82rem;color:var(--gray);line-height:1.7;}
-    .dir-actions{display:flex;gap:0.5rem;margin-top:0.8rem;}
-    .dir-btn{flex:1;padding:0.5rem;font-family:'Syne',sans-serif;font-size:0.78rem;font-weight:600;border-radius:6px;cursor:pointer;text-align:center;text-decoration:none;border:none;}
-    .dir-btn-wa{background:#25d366;color:#000;}
-    .dir-btn-chat{background:var(--green-light);color:var(--green);border:1px solid var(--green)!important;}
-
-    /* ── FAB ── */
-    .fab{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--green);color:#fff;border:none;width:56px;height:56px;border-radius:50%;font-size:1.5rem;cursor:pointer;box-shadow:0 4px 20px rgba(22,163,74,0.4);z-index:150;display:none;align-items:center;justify-content:center;transition:transform 0.2s;}
-    .fab:hover{transform:scale(1.1);}
-    .fab.show{display:flex;}
-    .fab-menu{position:fixed;bottom:5rem;right:1.5rem;z-index:151;display:none;flex-direction:column;gap:0.5rem;align-items:flex-end;}
-    .fab-menu.show{display:flex;}
-    .fab-item{background:var(--card);border:1px solid var(--border);color:var(--text);padding:0.6rem 1rem;font-family:'Syne',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);white-space:nowrap;border:none;}
-    .fab-item:hover{background:var(--green);color:#fff;}
-
-    /* ── MODALS ── */
-    .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;align-items:center;justify-content:center;padding:1rem;}
-    .overlay.open{display:flex;}
-    .modal{background:var(--card);width:100%;max-width:500px;max-height:90vh;overflow-y:auto;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.2);}
-    .modal-head{padding:1.2rem 1.5rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
-    .modal-head h2{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:700;}
-    .modal-close{background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--gray);}
-    .modal-body{padding:1.5rem;}
-    .field{margin-bottom:1rem;}
-    .field label{font-family:'Syne',sans-serif;font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--gray);display:block;margin-bottom:0.4rem;}
-    .field input,.field select,.field textarea{width:100%;background:var(--light);border:1px solid var(--border);padding:0.75rem;font-family:'DM Sans',sans-serif;font-size:0.9rem;outline:none;border-radius:8px;transition:border-color 0.2s;}
-    .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--green);}
-    .field textarea{resize:vertical;}
-    .btn-green{width:100%;background:var(--green);color:#fff;border:none;padding:0.9rem;font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:700;cursor:pointer;border-radius:8px;transition:background 0.2s;}
-    .btn-green:hover{background:var(--green-dark);}
-    .btn-wa{width:100%;background:#25d366;color:#000;border:none;padding:0.9rem;font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:700;cursor:pointer;border-radius:8px;margin-top:0.5rem;}
-
-    /* ── PROFILE BAR ── */
-    .profile-bar{display:none;background:var(--green-light);border:1px solid var(--green);border-radius:8px;padding:0.7rem 1rem;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;}
-    .profile-bar.show{display:flex;}
-    .profile-bar span{font-family:'Syne',sans-serif;font-size:0.85rem;font-weight:600;color:var(--green);}
-    .profile-bar button{background:none;border:1px solid var(--green);color:var(--green);font-family:'Syne',sans-serif;font-size:0.75rem;padding:0.3rem 0.7rem;cursor:pointer;border-radius:4px;}
-
-    /* ── EMPTY STATE ── */
-    .empty{text-align:center;padding:3rem 1rem;color:var(--gray);}
-    .empty div{font-size:3rem;margin-bottom:0.8rem;}
-    .empty p{font-family:'Syne',sans-serif;font-size:0.9rem;}
-
-    /* ── PREMIUM BADGE ── */
-    .premium-badge{background:var(--orange);color:#fff;font-family:'Syne',sans-serif;font-size:0.65rem;font-weight:700;padding:0.15rem 0.4rem;border-radius:3px;margin-left:0.4rem;}
-    .featured-card{border:2px solid var(--orange)!important;position:relative;}
-    .featured-tag{position:absolute;top:8px;right:8px;background:var(--orange);color:#fff;font-family:'Syne',sans-serif;font-size:0.6rem;font-weight:700;padding:0.2rem 0.5rem;border-radius:4px;}
-    .plan-card{border:2px solid var(--border);border-radius:12px;padding:1.2rem;text-align:center;cursor:pointer;transition:all 0.2s;}
-    .plan-card:hover{border-color:var(--green);}
-    .plan-card.selected{border-color:var(--green);background:var(--green-light);}
-    .plan-card .plan-price{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;color:var(--green);}
-    .plan-card .plan-name{font-family:'Syne',sans-serif;font-size:0.85rem;font-weight:700;margin-bottom:0.5rem;}
-    .plan-card .plan-desc{font-size:0.78rem;color:var(--gray);line-height:1.6;}
-    .commission-notice{background:#fff7ed;border:1px solid var(--orange);border-radius:8px;padding:0.8rem;font-size:0.82rem;color:var(--orange);margin-bottom:1rem;text-align:center;}
-    .featured-banner{background:linear-gradient(135deg,#fff7ed,#ffedd5);border:2px solid var(--orange);border-radius:12px;padding:1rem;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.8rem;}
-
-    /* ── TOAST ── */
-    #toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#0f172a;color:#fff;font-family:'Syne',sans-serif;font-size:0.85rem;padding:0.8rem 1.5rem;border-radius:8px;z-index:999;display:none;box-shadow:0 4px 20px rgba(0,0,0,0.2);}
-
-    @media(max-width:640px){
-      .chat-layout{grid-template-columns:1fr;height:auto;}
-      .chat-sidebar{display:none;}
-      .chat-sidebar.mobile-show{display:flex;height:300px;}
-      .product-grid{grid-template-columns:repeat(2,1fr);}
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#1a6b3c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="MacheLikid">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Mache Likidasyon</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--green:#1a6b3c;--gold:#e8a020;--dark:#0f1a14;--cream:#f5f0e8;--gray:#6b7280;--red:#dc2626}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);min-height:100vh;overflow-x:hidden}
+#installBanner{display:none;position:fixed;bottom:80px;left:12px;right:12px;background:var(--dark);color:white;border-radius:16px;padding:14px 16px;z-index:999;box-shadow:0 8px 30px rgba(0,0,0,0.3)}
+.install-row{display:flex;align-items:center;gap:12px}
+.install-icon{font-size:2rem}
+.install-text strong{display:block;font-size:0.9rem}
+.install-text span{font-size:0.78rem;color:rgba(255,255,255,0.7)}
+.install-btns{display:flex;gap:8px;margin-top:10px}
+.btn-install{flex:1;padding:10px;background:var(--gold);color:var(--dark);border:none;border-radius:10px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.85rem}
+.btn-dismiss{padding:10px 14px;background:transparent;color:rgba(255,255,255,0.6);border:1px solid rgba(255,255,255,0.2);border-radius:10px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.85rem}
+nav{background:var(--dark);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.logo{font-family:'Playfair Display',serif;color:var(--gold);font-size:1.4rem;font-weight:900}
+.logo span{color:#2d9e5f}
+.nav-btns{display:flex;gap:8px}
+.nav-btns button{padding:8px 16px;border:none;border-radius:20px;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;font-size:0.85rem}
+.btn-login{background:transparent;color:var(--cream);border:1px solid var(--gold)!important}
+.btn-signup{background:var(--gold);color:var(--dark)}
+.hero{background:linear-gradient(135deg,var(--dark) 0%,var(--green) 100%);padding:30px 20px;text-align:center;color:white}
+.hero h1{font-family:'Playfair Display',serif;font-size:1.8rem;margin-bottom:6px}
+.hero h1 span{color:var(--gold)}
+.hero p{color:rgba(255,255,255,0.75);font-size:0.88rem;margin-bottom:16px}
+.hero-search{display:flex;gap:8px;max-width:500px;margin:0 auto}
+.hero-search input{flex:1;padding:11px 16px;border:none;border-radius:25px;font-family:'DM Sans',sans-serif;font-size:0.9rem;outline:none}
+.hero-search button{padding:11px 18px;background:var(--gold);border:none;border-radius:25px;color:var(--dark);font-weight:700;cursor:pointer}
+.tabs{display:flex;background:white;border-bottom:2px solid #e5e7eb;overflow-x:auto;padding:0 12px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:13px 18px;border:none;background:none;font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:600;color:var(--gray);cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-2px}
+.tab.active{color:var(--green);border-bottom-color:var(--green)}
+.section{display:none;padding:14px;padding-bottom:90px}
+.section.active{display:block}
+.products-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.product-card{background:white;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);cursor:pointer;transition:transform 0.15s}
+.product-card:active{transform:scale(0.97)}
+.product-card.sponsored{border:2px solid var(--gold)}
+.sponsored-badge{background:var(--gold);color:var(--dark);font-size:0.65rem;font-weight:700;padding:2px 8px;text-align:center}
+.product-img{width:100%;height:130px;background:#e5e7eb;display:flex;align-items:center;justify-content:center;font-size:2.5rem;overflow:hidden}
+.product-img img{width:100%;height:100%;object-fit:cover}
+.product-info{padding:9px}
+.product-name{font-weight:600;font-size:0.82rem;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.product-price{color:var(--green);font-weight:700;font-size:0.88rem}
+.product-seller{color:var(--gray);font-size:0.68rem;margin-top:2px}
+.plans-container{display:flex;flex-direction:column;gap:14px}
+.plan-card{background:white;border-radius:16px;padding:18px;box-shadow:0 2px 12px rgba(0,0,0,0.08);border:2px solid transparent;position:relative}
+.plan-card.popular{border-color:var(--gold)}
+.popular-badge{position:absolute;top:12px;right:12px;background:var(--gold);color:var(--dark);font-size:0.7rem;font-weight:700;padding:4px 10px;border-radius:20px}
+.plan-name{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;margin-bottom:4px}
+.plan-price{font-size:1.7rem;font-weight:700;color:var(--green)}
+.plan-price span{font-size:0.88rem;color:var(--gray);font-weight:400}
+.plan-features{margin:10px 0;display:flex;flex-direction:column;gap:5px}
+.plan-feature{font-size:0.83rem;color:var(--gray);display:flex;gap:8px;align-items:center}
+.plan-feature::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0}
+.btn-plan{width:100%;padding:12px;background:var(--green);color:white;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-weight:700;cursor:pointer;font-size:0.92rem;margin-top:6px}
+.plan-card.popular .btn-plan{background:var(--gold);color:var(--dark)}
+.pub-card{background:white;border-radius:16px;padding:18px;box-shadow:0 2px 12px rgba(0,0,0,0.08);margin-bottom:14px}
+.pub-card h3{font-family:'Playfair Display',serif;font-size:1.05rem;margin-bottom:8px}
+.pub-price-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+.pub-price-item{background:var(--cream);border-radius:10px;padding:12px;text-align:center}
+.pub-price-item .price{font-size:1.15rem;font-weight:700;color:var(--green)}
+.pub-price-item .label{font-size:0.72rem;color:var(--gray)}
+.chat-list{display:flex;flex-direction:column;gap:4px}
+.chat-item{display:flex;align-items:center;gap:12px;padding:12px;background:white;border-radius:10px;cursor:pointer}
+.chat-avatar{width:44px;height:44px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:1rem;flex-shrink:0}
+.chat-name{font-weight:600;font-size:0.88rem}
+.chat-last{color:var(--gray);font-size:0.78rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chat-window{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:var(--cream);z-index:200;flex-direction:column}
+.chat-window.open{display:flex}
+.chat-header{background:var(--dark);padding:14px 16px;display:flex;align-items:center;gap:12px;color:white}
+.chat-header-back{background:none;border:none;color:white;font-size:1.3rem;cursor:pointer;padding:4px}
+.chat-messages{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:8px}
+.msg{max-width:78%;padding:9px 13px;border-radius:16px;font-size:0.86rem;line-height:1.4;word-break:break-word}
+.msg.sent{background:var(--green);color:white;align-self:flex-end;border-bottom-right-radius:4px}
+.msg.received{background:white;color:var(--dark);align-self:flex-start;border-bottom-left-radius:4px;box-shadow:0 1px 4px rgba(0,0,0,0.1)}
+.msg-time{font-size:0.62rem;opacity:0.7;margin-top:3px}
+.chat-input-area{background:white;padding:10px 14px;display:flex;gap:8px;align-items:center;border-top:1px solid #e5e7eb}
+.chat-input-area input{flex:1;padding:10px 14px;border:1.5px solid #e5e7eb;border-radius:25px;font-family:'DM Sans',sans-serif;outline:none;font-size:0.88rem}
+.btn-send{width:40px;height:40px;background:var(--green);border:none;border-radius:50%;color:white;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.profile-header{background:linear-gradient(135deg,var(--dark),var(--green));padding:28px 20px;text-align:center;color:white}
+.profile-avatar{width:68px;height:68px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:1.7rem;font-weight:700;color:var(--dark);margin:0 auto 10px}
+.profile-name{font-family:'Playfair Display',serif;font-size:1.2rem}
+.profile-plan{background:var(--gold);color:var(--dark);padding:4px 14px;border-radius:20px;font-size:0.78rem;font-weight:700;display:inline-block;margin-top:8px}
+.profile-menu{background:white;margin:14px;border-radius:14px;overflow:hidden}
+.profile-menu-item{display:flex;align-items:center;gap:14px;padding:15px;border-bottom:1px solid #f3f4f6;cursor:pointer;font-size:0.88rem;font-weight:500}
+.profile-menu-item:last-child{border-bottom:none}
+.menu-icon{font-size:1.1rem;width:28px;text-align:center}
+.menu-arrow{margin-left:auto;color:var(--gray)}
+.modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:300;align-items:flex-end}
+.modal-overlay.open{display:flex}
+.modal{background:white;border-radius:20px 20px 0 0;padding:22px 18px;width:100%;max-height:92vh;overflow-y:auto;animation:slideUp 0.3s ease}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-title{font-family:'Playfair Display',serif;font-size:1.25rem;margin-bottom:14px}
+.modal-handle{width:40px;height:4px;background:#e5e7eb;border-radius:2px;margin:0 auto 14px}
+.form-group{margin-bottom:12px}
+.form-group label{display:block;font-size:0.78rem;font-weight:600;margin-bottom:5px;color:var(--gray);text-transform:uppercase;letter-spacing:0.5px}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.9rem;outline:none;background:white}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--green)}
+.btn-primary{width:100%;padding:13px;background:var(--green);color:white;border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:0.95rem;cursor:pointer;margin-top:6px}
+.btn-secondary{width:100%;padding:13px;background:transparent;color:var(--green);border:2px solid var(--green);border-radius:12px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:0.95rem;cursor:pointer;margin-top:8px}
+.divider{text-align:center;color:var(--gray);font-size:0.82rem;margin:10px 0}
+.upload-area{border:2px dashed #d1d5db;border-radius:12px;padding:24px;text-align:center;cursor:pointer}
+.upload-area .icon{font-size:2.2rem;margin-bottom:6px}
+.upload-area p{color:var(--gray);font-size:0.82rem}
+.img-preview{width:100%;height:160px;object-fit:cover;border-radius:10px;margin-top:10px;display:none}
+.product-detail{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:var(--cream);z-index:200;overflow-y:auto}
+.product-detail.open{display:block}
+.detail-img-wrap{position:relative}
+.detail-img{width:100%;height:240px;background:#e5e7eb;display:flex;align-items:center;justify-content:center;font-size:4rem;overflow:hidden}
+.detail-img img{width:100%;height:100%;object-fit:cover}
+.detail-back{position:absolute;top:14px;left:14px;background:rgba(0,0,0,0.5);color:white;border:none;width:36px;height:36px;border-radius:50%;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.detail-body{padding:18px;padding-bottom:90px}
+.detail-price{font-size:1.7rem;font-weight:700;color:var(--green)}
+.detail-name{font-family:'Playfair Display',serif;font-size:1.2rem;margin:4px 0}
+.detail-desc{color:var(--gray);font-size:0.86rem;line-height:1.5;margin:8px 0}
+.detail-seller{display:flex;align-items:center;gap:10px;background:white;padding:12px;border-radius:12px;margin:14px 0}
+.detail-actions{display:flex;flex-direction:column;gap:8px}
+.btn-whatsapp{background:#25D366;color:white;border:none;padding:13px;border-radius:12px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:0.92rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-chat{background:var(--green);color:white;border:none;padding:13px;border-radius:12px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:0.92rem;cursor:pointer;width:100%}
+.admin-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.stat-card{background:white;border-radius:12px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+.stat-number{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--green)}
+.stat-label{font-size:0.72rem;color:var(--gray);margin-top:3px}
+.admin-section{background:white;border-radius:12px;padding:14px;margin-bottom:10px}
+.admin-section h3{font-weight:700;margin-bottom:10px;font-size:0.92rem}
+.user-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #f3f4f6}
+.user-item:last-child{border-bottom:none}
+.user-avatar-sm{width:34px;height:34px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:0.78rem;flex-shrink:0}
+.user-info{flex:1;min-width:0}
+.user-name{font-weight:600;font-size:0.82rem}
+.user-plan{font-size:0.7rem;color:var(--gray)}
+.user-actions{display:flex;gap:5px}
+.btn-xs{padding:5px 9px;border:none;border-radius:6px;font-size:0.7rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+.btn-approve{background:#d1fae5;color:var(--green)}
+.btn-block{background:#fee2e2;color:var(--red)}
+.payment-methods{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.payment-method{background:var(--cream);border-radius:10px;padding:12px;display:flex;align-items:center;gap:12px;cursor:pointer;border:2px solid transparent}
+.payment-method.selected{border-color:var(--green);background:#d1fae5}
+.payment-icon{font-size:1.4rem}
+.payment-name{font-weight:600;font-size:0.88rem}
+.payment-num{font-size:0.76rem;color:var(--gray)}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:white;display:flex;border-top:1px solid #e5e7eb;padding:6px 0;z-index:100}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:5px;background:none;border:none;cursor:pointer;color:var(--gray);font-size:0.62rem;font-family:'DM Sans',sans-serif;font-weight:500}
+.nav-item.active{color:var(--green)}
+.nav-icon{font-size:1.25rem}
+.add-btn-circle{background:var(--green);color:white;border-radius:50%;width:42px;height:42px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-top:-8px}
+.toast{position:fixed;top:75px;left:50%;transform:translateX(-50%);background:var(--dark);color:white;padding:11px 22px;border-radius:25px;font-size:0.83rem;z-index:500;display:none;white-space:nowrap;max-width:90vw;text-align:center}
+.toast.show{display:block;animation:fadeInOut 3.2s ease}
+@keyframes fadeInOut{0%{opacity:0;transform:translateX(-50%) translateY(-8px)}15%{opacity:1;transform:translateX(-50%) translateY(0)}85%{opacity:1}100%{opacity:0}}
+.empty-state{text-align:center;padding:36px 16px;color:var(--gray)}
+.empty-state .icon{font-size:2.8rem;margin-bottom:10px}
+#offlineBanner{display:none;background:var(--red);color:white;text-align:center;padding:8px;font-size:0.8rem;font-weight:600}
+</style>
 </head>
 <body>
-
-<header>
-  <div class="header-inner">
-    <div class="logo">🏪 Mache Likidasyon <span class="logo-dot"></span></div>
-    <div class="header-actions">
-      <button class="lang-btn active" onclick="setLang('ht')">HT</button>
-      <button class="lang-btn" onclick="setLang('fr')">FR</button>
-      <button class="lang-btn" onclick="setLang('en')">EN</button>
-      <button class="header-login" id="login-top-btn" onclick="openModal('login-modal')">🔐 <span data-t="login">Konekte</span></button>
-    </div>
+<div id="offlineBanner">📵 Ou pa konekte — Kèk done ka pa disponib</div>
+<div class="toast" id="toast"></div>
+<nav>
+  <div class="logo">Mache<span>Likid</span></div>
+  <div class="nav-btns" id="navBtns">
+    <button class="btn-login" onclick="openModal('loginModal')">Konekte</button>
+    <button class="btn-signup" onclick="openModal('signupModal')">Enskri</button>
   </div>
-</header>
-
-<div class="nav-tabs">
-  <div class="nav-tabs-inner">
-    <button class="tab-btn active" onclick="showTab('mache')" id="tab-mache">🛒 <span data-t="market">Mache</span></button>
-    <button class="tab-btn" onclick="showTab('chat')" id="tab-chat">💬 <span data-t="chat">Chat</span></button>
-    <button class="tab-btn" onclick="showTab('annuaire')" id="tab-annuaire">📋 <span data-t="directory">Anyè</span></button>
-    <button class="tab-btn" onclick="showTab('profil')" id="tab-profil">👤 <span data-t="profile">Pwofil</span></button>
+  <div id="navUser" style="display:none;color:var(--gold);font-weight:700;font-size:0.88rem;cursor:pointer" onclick="showTab('profil')"></div>
+</nav>
+<div class="hero">
+  <h1>Mache <span>Likidasyon</span> 🛍️</h1>
+  <p>Achte & vann pwodwi nan tout peyi a</p>
+  <div class="hero-search">
+    <input type="text" id="searchInput" placeholder="Chèche pwodwi..." oninput="filterProducts()">
+    <button onclick="filterProducts()">🔍</button>
   </div>
 </div>
-
-<!-- ═══ MACHE ═══ -->
+<div class="tabs">
+  <button class="tab active" onclick="showTab('mache')">🛒 Mache</button>
+  <button class="tab" onclick="showTab('plan')">💎 Plan</button>
+  <button class="tab" onclick="showTab('pub')">📢 Piblisite</button>
+  <button class="tab" onclick="showTab('chat')">💬 Chat</button>
+  <button class="tab" onclick="showTab('profil')">👤 Mwen</button>
+</div>
 <div class="section active" id="sec-mache">
-  <div class="search-bar">
-    <input type="text" id="search-input" placeholder="🔍 Rechèch pwodwi..." oninput="filterProducts()"/>
-    <button onclick="filterProducts()"><span data-t="search">Chèche</span></button>
-  </div>
-  <div class="cats" id="cats">
-    <button class="cat-pill active" onclick="filterCat('tout')" data-cat="tout">🛍️ <span data-t="all">Tout</span></button>
-    <button class="cat-pill" onclick="filterCat('manje')" data-cat="manje">🍖 <span data-t="food">Manje</span></button>
-    <button class="cat-pill" onclick="filterCat('rad')" data-cat="rad">👗 <span data-t="clothes">Rad</span></button>
-    <button class="cat-pill" onclick="filterCat('elektwonik')" data-cat="elektwonik">📱 <span data-t="electronics">Elektwonik</span></button>
-    <button class="cat-pill" onclick="filterCat('sante')" data-cat="sante">💊 <span data-t="health">Sante</span></button>
-    <button class="cat-pill" onclick="filterCat('kay')" data-cat="kay">🏠 <span data-t="home">Kay</span></button>
-    <button class="cat-pill" onclick="filterCat('lòt')" data-cat="lòt">📦 <span data-t="other">Lòt</span></button>
-  </div>
-  <!-- FEATURED BANNER -->
-  <div class="featured-banner" id="featured-section" style="display:none;">
-    <div>
-      <div style="font-family:'Syne',sans-serif;font-size:0.9rem;font-weight:700;color:var(--orange);">🌟 Pwodwi Featured</div>
-      <div style="font-size:0.8rem;color:var(--gray);">Peye pou pwodwi ou parèt anlè!</div>
-    </div>
-    <button onclick="openModal('featured-modal')" style="background:var(--orange);color:#fff;border:none;padding:0.5rem 1rem;font-family:'Syne',sans-serif;font-size:0.82rem;font-weight:700;cursor:pointer;border-radius:6px;">🌟 Featured →</button>
-  </div>
-  <div class="product-grid" id="featured-grid" style="margin-bottom:1.5rem;display:none;"></div>
-
-  <div class="profile-bar" id="profile-bar"></div>
-  <div class="product-grid" id="product-grid">
-    <div class="empty" style="grid-column:1/-1"><div>⏳</div><p data-t="loading">Chajman pwodwi yo...</p></div>
+  <div class="products-grid" id="productsGrid">
+    <div class="empty-state" style="grid-column:1/-1"><div class="icon">⏳</div><p>Ap chaje...</p></div>
   </div>
 </div>
-
-<!-- ═══ CHAT ═══ -->
+<div class="section" id="sec-plan">
+  <div class="plans-container">
+    <div class="plan-card">
+      <div class="plan-name">🥉 Basik</div>
+      <div class="plan-price">500G <span>/mwa</span></div>
+      <div class="plan-features">
+        <div class="plan-feature">10 pwodwi maksimòm</div>
+        <div class="plan-feature">Upload imaj pwodwi</div>
+        <div class="plan-feature">Chat ak achetè yo</div>
+        <div class="plan-feature">Profil vandè</div>
+      </div>
+      <button class="btn-plan" onclick="buyPlan('Basik',500)">Achte Plan Basik</button>
+    </div>
+    <div class="plan-card popular">
+      <div class="popular-badge">⭐ Popilè</div>
+      <div class="plan-name">🥈 Pro</div>
+      <div class="plan-price">1,500G <span>/mwa</span></div>
+      <div class="plan-features">
+        <div class="plan-feature">30 pwodwi maksimòm</div>
+        <div class="plan-feature">Upload imaj pwodwi</div>
+        <div class="plan-feature">Chat ak achetè yo</div>
+        <div class="plan-feature">Priyorite nan rechèch</div>
+        <div class="plan-feature">Profil vandè avanse</div>
+      </div>
+      <button class="btn-plan" onclick="buyPlan('Pro',1500)">Achte Plan Pro</button>
+    </div>
+    <div class="plan-card">
+      <div class="plan-name">🥇 Premium</div>
+      <div class="plan-price">3,000G <span>/mwa</span></div>
+      <div class="plan-features">
+        <div class="plan-feature">100 pwodwi maksimòm</div>
+        <div class="plan-feature">Upload imaj pwodwi</div>
+        <div class="plan-feature">Chat ak achetè yo</div>
+        <div class="plan-feature">Profil vandè VIP</div>
+        <div class="plan-feature">Piblisite gratis 1x/mwa</div>
+        <div class="plan-feature">Sipò priyoritè</div>
+      </div>
+      <button class="btn-plan" onclick="buyPlan('Premium',3000)">Achte Plan Premium</button>
+    </div>
+  </div>
+</div>
+<div class="section" id="sec-pub">
+  <div class="pub-card">
+    <h3>📢 Fè Piblisite Pou Pwodwi Ou</h3>
+    <p style="color:var(--gray);font-size:0.83rem">Pwodwi sponsorisé parèt premye ak badge ⭐</p>
+    <div class="pub-price-grid">
+      <div class="pub-price-item"><div class="price">200G</div><div class="label">Basik/Semèn</div></div>
+      <div class="pub-price-item"><div class="price">500G</div><div class="label">Pro/Mwa</div></div>
+    </div>
+    <button class="btn-primary" onclick="buyPub()">📢 Fè Piblisite Kounye a</button>
+  </div>
+  <div class="pub-card">
+    <h3>📞 Kontakte Admin</h3>
+    <p style="color:var(--gray);font-size:0.83rem;margin-bottom:10px">Pou nenpòt kesyon oswa asistans:</p>
+    <button class="btn-whatsapp" onclick="contactAdmin()">💬 WhatsApp Admin: 56565623</button>
+  </div>
+</div>
 <div class="section" id="sec-chat">
-  <div class="chat-layout">
-    <div class="chat-sidebar" id="chat-sidebar">
-      <div class="chat-sidebar-header">💬 <span data-t="conversations">Konvèsasyon</span></div>
-      <div class="chat-list" id="chat-list">
-        <div class="empty"><div>💬</div><p data-t="no_conv">Pa gen konvèsasyon ankò</p></div>
-      </div>
-    </div>
-    <div class="chat-main">
-      <div class="chat-header" id="chat-header">
-        <div class="chat-avatar" id="chat-with-avatar">?</div>
-        <div>
-          <div style="font-family:'Syne',sans-serif;font-weight:700;" id="chat-with-name"><span data-t="select_conv">Chwazi yon konvèsasyon</span></div>
-          <div style="font-size:0.75rem;color:var(--gray);" id="chat-with-sub"></div>
-        </div>
-      </div>
-      <div class="chat-messages" id="chat-messages">
-        <div class="chat-empty"><div style="font-size:3rem;">💬</div><p data-t="start_chat">Kòmanse yon konvèsasyon ak yon machann</p></div>
-      </div>
-      <div class="chat-input" id="chat-input-area" style="display:none;">
-        <input type="text" id="msg-input" placeholder="Ekri mesaj..." onkeydown="if(event.key==='Enter')sendMsg()"/>
-        <button onclick="sendMsg()">➤</button>
-      </div>
-    </div>
+  <div id="chatList">
+    <div class="empty-state"><div class="icon">💬</div><p>Pa gen konvèsasyon<br><small>Klike sou yon pwodwi pou kòmanse</small></p></div>
   </div>
 </div>
-
-<!-- ═══ ANYÈ ═══ -->
-<div class="section" id="sec-annuaire">
-  <div class="search-bar">
-    <input type="text" id="dir-search" placeholder="🔍 Chèche machann..." oninput="filterDir()"/>
-    <button onclick="filterDir()"><span data-t="search">Chèche</span></button>
-  </div>
-  <div class="dir-grid" id="dir-grid">
-    <div class="empty" style="grid-column:1/-1"><div>⏳</div><p data-t="loading">Chajman...</p></div>
-  </div>
-</div>
-
-<!-- ═══ PWOFIL ═══ -->
 <div class="section" id="sec-profil">
-  <div id="profil-logged-out" style="text-align:center;padding:3rem 1rem;">
-    <div style="font-size:4rem;margin-bottom:1rem;">👤</div>
-    <div style="font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:700;margin-bottom:0.5rem;" data-t="not_logged">Ou pa konekte</div>
-    <p style="color:var(--gray);font-size:0.9rem;margin-bottom:1.5rem;" data-t="login_to_sell">Konekte pou vann pwodwi ou yo ak kominike</p>
-    <button class="btn-green" style="max-width:280px;margin:0 auto;" onclick="openModal('login-modal')"><span data-t="login">Konekte</span></button>
-    <br/><br/>
-    <button class="btn-green" style="max-width:280px;margin:0 auto;background:var(--orange);" onclick="openModal('register-modal')"><span data-t="register">Kreye Kont</span></button>
-  </div>
-  <div id="profil-logged-in" style="display:none;">
-    <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:1.5rem;">
-      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;">
-        <div class="dir-avatar" id="profil-avatar" style="width:64px;height:64px;font-size:1.8rem;">M</div>
-        <div>
-          <div style="font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:700;" id="profil-name">Machann</div>
-          <div style="font-size:0.85rem;color:var(--gray);" id="profil-cat"></div>
-          <div style="font-size:0.8rem;color:var(--gray);" id="profil-loc">📍</div>
-        </div>
-      </div>
-      <button class="btn-green" onclick="openModal('product-modal')">➕ <span data-t="add_product">Ajoute Pwodwi</span></button>
-      <button style="width:100%;margin-top:0.5rem;background:var(--orange);color:#fff;border:none;padding:0.7rem;font-family:'Syne',sans-serif;font-size:0.85rem;font-weight:700;cursor:pointer;border-radius:8px;" onclick="openModal('abonnman-modal')">⭐ Abònman Premium</button>
-      <button style="width:100%;margin-top:0.5rem;background:none;border:1px solid var(--border);padding:0.7rem;font-family:'Syne',sans-serif;font-size:0.85rem;cursor:pointer;border-radius:8px;" onclick="logout()"><span data-t="logout">Dekonekte</span></button>
-    </div>
-    <div style="font-family:'Syne',sans-serif;font-size:0.9rem;font-weight:700;margin-bottom:1rem;" data-t="my_products">Pwodwi Mwen Yo</div>
-    <div class="product-grid" id="my-products-grid"></div>
-  </div>
-</div>
-
-<!-- FAB -->
-<button class="fab" id="fab" onclick="toggleFabMenu()">➕</button>
-<div class="fab-menu" id="fab-menu">
-  <button class="fab-item" onclick="openModal('product-modal');toggleFabMenu()">🛍️ <span data-t="sell_product">Vann Pwodwi</span></button>
-  <button class="fab-item" onclick="openModal('register-modal');toggleFabMenu()">👤 <span data-t="register">Kreye Kont</span></button>
-</div>
-
-<!-- ═══ MODALS ═══ -->
-
-<!-- LOGIN -->
-<div class="overlay" id="login-modal" onclick="if(event.target===this)closeModal('login-modal')">
-  <div class="modal">
-    <div class="modal-head"><h2>🔐 <span data-t="login">Konekte</span></h2><button class="modal-close" onclick="closeModal('login-modal')">✕</button></div>
-    <div class="modal-body">
-      <div class="field"><label data-t="phone">Telefòn / Non</label><input id="l-phone" type="text" placeholder="ex: 3691-1132"/></div>
-      <div class="field"><label data-t="password">Modpas</label><input id="l-pass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/></div>
-      <div id="l-err" style="color:var(--red);font-size:0.82rem;display:none;margin-bottom:0.8rem;"></div>
-      <button class="btn-green" onclick="doLogin()"><span data-t="login">Konekte</span></button>
-      <p style="text-align:center;margin-top:1rem;font-size:0.85rem;color:var(--gray);"><span data-t="no_account">Pa gen kont?</span> <a href="#" onclick="closeModal('login-modal');openModal('register-modal')" style="color:var(--green);font-weight:600;" data-t="register">Kreye kont →</a></p>
+  <div id="profilContent">
+    <div class="empty-state">
+      <div class="icon">👤</div>
+      <p>Konekte pou wè pwofil ou</p>
+      <button class="btn-primary" style="margin-top:14px" onclick="openModal('loginModal')">Konekte</button>
     </div>
   </div>
 </div>
-
-<!-- REGISTER -->
-<div class="overlay" id="register-modal" onclick="if(event.target===this)closeModal('register-modal')">
-  <div class="modal">
-    <div class="modal-head"><h2>👤 <span data-t="register">Kreye Kont Machann</span></h2><button class="modal-close" onclick="closeModal('register-modal')">✕</button></div>
-    <div class="modal-body">
-      <div class="field"><label data-t="name">Non ou *</label><input id="r-name" type="text" placeholder="Non biznis ou..."/></div>
-      <div class="field"><label data-t="phone">Telefòn *</label><input id="r-phone" type="tel" placeholder="ex: 3691-1132"/></div>
-      <div class="field"><label data-t="password">Modpas *</label><input id="r-pass" type="password" placeholder="Chwazi yon modpas..."/></div>
-      <div class="field"><label data-t="category">Kategori Biznis</label>
-        <select id="r-cat">
-          <option value="manje">🍖 Manje & Bwason</option>
-          <option value="rad">👗 Rad & Akseswa</option>
-          <option value="elektwonik">📱 Elektwonik</option>
-          <option value="sante">💊 Sante & Bote</option>
-          <option value="kay">🏠 Kay & Dekorasyon</option>
-          <option value="lòt">📦 Lòt</option>
-        </select>
-      </div>
-      <div class="field"><label data-t="location">Kote ou ye *</label><input id="r-loc" type="text" placeholder="ex: Pòtoprens, Kafou..."/></div>
-      <div class="field"><label>WhatsApp</label><input id="r-wa" type="tel" placeholder="Nimewo WhatsApp ou..."/></div>
-      <div id="r-err" style="color:var(--red);font-size:0.82rem;display:none;margin-bottom:0.8rem;"></div>
-      <button class="btn-green" onclick="doRegister()"><span data-t="create_account">Kreye Kont →</span></button>
-    </div>
+<!-- CHAT WINDOW -->
+<div class="chat-window" id="chatWindow">
+  <div class="chat-header">
+    <button class="chat-header-back" onclick="closeChatWindow()">←</button>
+    <div style="width:34px;height:34px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;color:var(--dark);font-weight:700;font-size:0.88rem" id="chatAvatarH">?</div>
+    <div><div style="font-weight:700;font-size:0.92rem" id="chatPartnerName">...</div><div style="font-size:0.7rem;opacity:0.7">Vandè</div></div>
+  </div>
+  <div class="chat-messages" id="chatMessages"></div>
+  <div class="chat-input-area">
+    <input type="text" id="chatInput" placeholder="Ekri mesaj ou..." onkeypress="if(event.key==='Enter')sendMessage()">
+    <button class="btn-send" onclick="sendMessage()">➤</button>
   </div>
 </div>
-
-<!-- PRODUCT -->
-<div class="overlay" id="product-modal" onclick="if(event.target===this)closeModal('product-modal')">
-  <div class="modal">
-    <div class="modal-head"><h2>🛍️ <span data-t="add_product">Ajoute Pwodwi</span></h2><button class="modal-close" onclick="closeModal('product-modal')">✕</button></div>
-    <div class="modal-body">
-      <div class="field"><label data-t="product_name">Non Pwodwi *</label><input id="p-name" type="text" placeholder="ex: Diri Nasyonal, Telefòn Samsung..."/></div>
-      <div class="field"><label data-t="price">Pri (Goud) *</label><input id="p-price" type="number" placeholder="ex: 500"/></div>
-      <div class="field"><label data-t="category">Kategori</label>
-        <select id="p-cat">
-          <option value="manje">🍖 Manje</option>
-          <option value="rad">👗 Rad</option>
-          <option value="elektwonik">📱 Elektwonik</option>
-          <option value="sante">💊 Sante</option>
-          <option value="kay">🏠 Kay</option>
-          <option value="lòt">📦 Lòt</option>
-        </select>
-      </div>
-      <div class="field"><label data-t="emoji_icon">Emoji Ikòn</label>
-        <select id="p-emoji">
-          <option>🍖</option><option>🍚</option><option>🥦</option><option>🐟</option>
-          <option>👗</option><option>👟</option><option>👜</option>
-          <option>📱</option><option>💻</option><option>📺</option>
-          <option>💊</option><option>🧴</option><option>🏠</option><option>🪑</option>
-          <option>📦</option><option>🌿</option><option>🎵</option>
-        </select>
-      </div>
-      <div class="field"><label data-t="description">Deskripsyon</label><textarea id="p-desc" rows="3" placeholder="Dekri pwodwi ou a..."></textarea></div>
-      <div style="background:#fff7ed;border:1px solid var(--orange);border-radius:6px;padding:0.6rem;font-size:0.78rem;color:var(--orange);margin-bottom:0.8rem;">💸 <strong>Komisyon:</strong> 3% sou chak vant fèt via app la. Gratis: 3 pwodwi sèlman.</div>
-      <div id="p-err" style="color:var(--red);font-size:0.82rem;display:none;margin-bottom:0.8rem;"></div>
-      <button class="btn-green" onclick="submitProduct()"><span data-t="publish">Pibliye →</span></button>
-    </div>
-  </div>
-</div>
-
 <!-- PRODUCT DETAIL -->
-<div class="overlay" id="detail-modal" onclick="if(event.target===this)closeModal('detail-modal')">
+<div class="product-detail" id="productDetail">
+  <div class="detail-img-wrap">
+    <div class="detail-img" id="detailImg">🛍️</div>
+    <button class="detail-back" onclick="closeDetail()">←</button>
+  </div>
+  <div class="detail-body">
+    <div class="detail-price" id="detailPrice"></div>
+    <div class="detail-name" id="detailName"></div>
+    <div class="detail-desc" id="detailDesc"></div>
+    <div class="detail-seller" id="detailSeller"></div>
+    <div class="detail-actions">
+      <button class="btn-chat" onclick="chatWithSeller()">💬 Chat ak Vandè</button>
+      <button class="btn-whatsapp" onclick="contactAdmin()">💬 Kontakte Admin</button>
+    </div>
+  </div>
+</div>
+<!-- LOGIN -->
+<div class="modal-overlay" id="loginModal" onclick="if(event.target===this)closeModal('loginModal')">
   <div class="modal">
-    <div class="modal-head"><h2 id="det-title">Pwodwi</h2><button class="modal-close" onclick="closeModal('detail-modal')">✕</button></div>
-    <div class="modal-body">
-      <div id="det-emoji" style="font-size:5rem;text-align:center;margin-bottom:1rem;"></div>
-      <div style="font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;color:var(--green);margin-bottom:0.5rem;" id="det-price"></div>
-      <div style="font-size:0.9rem;color:var(--gray);margin-bottom:0.5rem;" id="det-seller"></div>
-      <div style="font-size:0.85rem;line-height:1.7;margin-bottom:1.2rem;" id="det-desc"></div>
-      <div style="font-size:0.82rem;color:var(--gray);margin-bottom:1rem;" id="det-loc"></div>
-      <button class="btn-green" id="det-chat-btn">💬 <span data-t="contact_seller">Kontakte Machann</span></button>
-      <button class="btn-wa" id="det-wa-btn">📱 WhatsApp</button>
-      <div id="det-commission" style="display:none;background:#f0fdf4;border:1px solid var(--green);border-radius:6px;padding:0.6rem;font-size:0.78rem;color:var(--green);margin-top:0.8rem;text-align:center;"></div>
-      <button id="det-featured-btn" style="display:none;width:100%;margin-top:0.5rem;background:var(--orange);color:#fff;border:none;padding:0.7rem;font-family:'Syne',sans-serif;font-size:0.85rem;font-weight:700;cursor:pointer;border-radius:8px;" onclick="closeModal('detail-modal');openModal('featured-modal')">🌟 Mete Featured</button>
-    </div>
+    <div class="modal-handle"></div>
+    <div class="modal-title">🔑 Konekte</div>
+    <div class="form-group"><label>Email</label><input type="email" id="loginEmail" placeholder="ou@email.com" autocomplete="email"></div>
+    <div class="form-group"><label>Modpas</label><input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password"></div>
+    <button class="btn-primary" onclick="login()">Konekte</button>
+    <div class="divider">oswa</div>
+    <button class="btn-secondary" onclick="closeModal('loginModal');openModal('signupModal')">Kreye Kont</button>
+    <p style="text-align:center;margin-top:10px;font-size:0.78rem;color:var(--gray)">Bliye modpas? <a href="#" style="color:var(--green)" onclick="resetPass(event)">Reyinisyalize</a></p>
   </div>
 </div>
-
-<!-- ABÒNMAN MODAL -->
-<div class="overlay" id="abonnman-modal" onclick="if(event.target===this)closeModal('abonnman-modal')">
-  <div class="modal" style="max-width:500px;">
-    <div class="modal-head"><h2>⭐ Abònman Premium</h2><button class="modal-close" onclick="closeModal('abonnman-modal')">✕</button></div>
-    <div class="modal-body">
-      <p style="color:var(--gray);font-size:0.85rem;margin-bottom:1.2rem;">Chwazi plan ki pi bon pou ou. Gratis pou 3 premye pwodwi!</p>
-
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin-bottom:1.5rem;">
-        <div class="plan-card" onclick="selectPlan(this,'Debutan','500','500g/mwa — 10 pwodwi')">
-          <div class="plan-name">🌱 Debutan</div>
-          <div class="plan-price">500<span style="font-size:0.8rem;font-weight:400;">g</span></div>
-          <div class="plan-desc">pa mwa<br/>10 pwodwi<br/>Chat aktif</div>
-        </div>
-        <div class="plan-card selected" id="plan-default" onclick="selectPlan(this,'Machann','1200','1200g/mwa — 50 pwodwi + Featured')">
-          <div style="background:var(--orange);color:#fff;font-family:'Syne',sans-serif;font-size:0.6rem;font-weight:700;padding:0.2rem;margin:-1.2rem -1.2rem 0.8rem;border-radius:10px 10px 0 0;">⭐ PI POPILÈ</div>
-          <div class="plan-name">🏪 Machann</div>
-          <div class="plan-price">1200<span style="font-size:0.8rem;font-weight:400;">g</span></div>
-          <div class="plan-desc">pa mwa<br/>50 pwodwi<br/>+ Featured</div>
-        </div>
-        <div class="plan-card" onclick="selectPlan(this,'Biznis','2500','2500g/mwa — Ilimite + Top Featured')">
-          <div class="plan-name">🏆 Biznis</div>
-          <div class="plan-price">2500<span style="font-size:0.8rem;font-weight:400;">g</span></div>
-          <div class="plan-desc">pa mwa<br/>Ilimite<br/>Top Featured</div>
-        </div>
-      </div>
-
-      <div style="font-family:'Syne',sans-serif;font-size:0.8rem;font-weight:700;margin-bottom:0.8rem;">💳 Voye Peman:</div>
-      <div style="background:#fdf2f8;border-left:4px solid #e91e8c;padding:0.8rem;border-radius:6px;margin-bottom:0.6rem;display:flex;gap:0.8rem;align-items:center;">
-        <span style="font-size:1.5rem;">💳</span>
-        <div><div style="font-family:'Syne',sans-serif;font-size:0.9rem;color:#e91e8c;font-weight:700;">MonCash — 3691-1132</div><div style="font-size:0.75rem;color:var(--gray);">Voye montan plan ou a</div></div>
-      </div>
-      <div style="background:#f0fdf4;border-left:4px solid #16a34a;padding:0.8rem;border-radius:6px;margin-bottom:1.2rem;display:flex;gap:0.8rem;align-items:center;">
-        <span style="font-size:1.5rem;">💚</span>
-        <div><div style="font-family:'Syne',sans-serif;font-size:0.9rem;color:#16a34a;font-weight:700;">NatCash — 5656-5623</div><div style="font-size:0.75rem;color:var(--gray);">Voye montan plan ou a</div></div>
-      </div>
-
-      <div class="field"><label>Non ou *</label><input id="sub-name" type="text" placeholder="Non ou..."/></div>
-      <div class="field"><label>Telefòn *</label><input id="sub-phone" type="tel" placeholder="Nimewo ou..."/></div>
-      <div id="sub-plan-display" style="background:var(--green-light);border:1px solid var(--green);border-radius:6px;padding:0.6rem 1rem;font-family:'Syne',sans-serif;font-size:0.85rem;color:var(--green);margin-bottom:1rem;">📦 Plan: Machann — 1200g/mwa</div>
-      <button class="btn-wa" onclick="sendAbonnmanWA()">📱 Konfime sou WhatsApp →</button>
-    </div>
+<!-- SIGNUP -->
+<div class="modal-overlay" id="signupModal" onclick="if(event.target===this)closeModal('signupModal')">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">✨ Kreye Kont</div>
+    <div class="form-group"><label>Non Konplè</label><input type="text" id="signupName" placeholder="Non ou" autocomplete="name"></div>
+    <div class="form-group"><label>Email</label><input type="email" id="signupEmail" placeholder="ou@email.com" autocomplete="email"></div>
+    <div class="form-group"><label>Telefòn</label><input type="tel" id="signupPhone" placeholder="509 XXXX XXXX"></div>
+    <div class="form-group"><label>Modpas</label><input type="password" id="signupPass" placeholder="Omwen 6 karaktè" autocomplete="new-password"></div>
+    <button class="btn-primary" onclick="signup()">Kreye Kont</button>
+    <div class="divider">oswa</div>
+    <button class="btn-secondary" onclick="closeModal('signupModal');openModal('loginModal')">Deja gen kont</button>
   </div>
 </div>
-
-<!-- FEATURED MODAL -->
-<div class="overlay" id="featured-modal" onclick="if(event.target===this)closeModal('featured-modal')">
-  <div class="modal" style="max-width:480px;">
-    <div class="modal-head"><h2>🌟 Pwodwi Featured</h2><button class="modal-close" onclick="closeModal('featured-modal')">✕</button></div>
-    <div class="modal-body">
-      <p style="color:var(--gray);font-size:0.85rem;margin-bottom:1.2rem;">Fè pwodwi ou parèt <strong>anlè lis la</strong> pou plis moun wè li!</p>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-bottom:1.5rem;">
-        <div class="plan-card" onclick="selectFeatured(this,'3 Jou','200','200g — 3 jou featured')">
-          <div class="plan-name">⚡ 3 Jou</div>
-          <div class="plan-price">200<span style="font-size:0.8rem;">g</span></div>
-          <div class="plan-desc">Parèt anlè 3 jou</div>
-        </div>
-        <div class="plan-card selected" onclick="selectFeatured(this,'1 Semèn','500','500g — 1 semèn featured')">
-          <div class="plan-name">🌟 1 Semèn</div>
-          <div class="plan-price">500<span style="font-size:0.8rem;">g</span></div>
-          <div class="plan-desc">Parèt anlè 7 jou</div>
-        </div>
-        <div class="plan-card" onclick="selectFeatured(this,'2 Semèn','800','800g — 2 semèn featured')">
-          <div class="plan-name">🔥 2 Semèn</div>
-          <div class="plan-price">800<span style="font-size:0.8rem;">g</span></div>
-          <div class="plan-desc">Parèt anlè 14 jou</div>
-        </div>
-        <div class="plan-card" onclick="selectFeatured(this,'1 Mwa','1500','1500g — 1 mwa featured')">
-          <div class="plan-name">👑 1 Mwa</div>
-          <div class="plan-price">1500<span style="font-size:0.8rem;">g</span></div>
-          <div class="plan-desc">Parèt anlè 30 jou</div>
-        </div>
-      </div>
-      <div style="background:#fdf2f8;border-left:4px solid #e91e8c;padding:0.8rem;border-radius:6px;margin-bottom:0.6rem;display:flex;gap:0.8rem;align-items:center;">
-        <span>💳</span><div><div style="font-family:'Syne',sans-serif;font-size:0.9rem;color:#e91e8c;font-weight:700;">MonCash — 3691-1132</div></div>
-      </div>
-      <div style="background:#f0fdf4;border-left:4px solid #16a34a;padding:0.8rem;border-radius:6px;margin-bottom:1.2rem;display:flex;gap:0.8rem;align-items:center;">
-        <span>💚</span><div><div style="font-family:'Syne',sans-serif;font-size:0.9rem;color:#16a34a;font-weight:700;">NatCash — 5656-5623</div></div>
-      </div>
-      <div class="field"><label>Non Pwodwi ou a</label><input id="feat-product" type="text" placeholder="Ki pwodwi ou vle mete featured?"/></div>
-      <div id="feat-plan-display" style="background:#fff7ed;border:1px solid var(--orange);border-radius:6px;padding:0.6rem 1rem;font-family:'Syne',sans-serif;font-size:0.85rem;color:var(--orange);margin-bottom:1rem;">🌟 Plan: 1 Semèn — 500g</div>
-      <button class="btn-wa" onclick="sendFeaturedWA()">📱 Konfime sou WhatsApp →</button>
+<!-- ADD PRODUCT -->
+<div class="modal-overlay" id="addProductModal" onclick="if(event.target===this)closeModal('addProductModal')">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">➕ Ajoute Pwodwi</div>
+    <div class="upload-area" onclick="document.getElementById('productImgFile').click()">
+      <div class="icon">📷</div>
+      <p>Klike pou ajoute imaj pwodwi</p>
+      <input type="file" id="productImgFile" accept="image/*" style="display:none" onchange="previewImage(this)">
+      <img id="imgPreview" class="img-preview">
     </div>
+    <div class="form-group" style="margin-top:12px"><label>Non Pwodwi</label><input type="text" id="prodName" placeholder="Non pwodwi ou"></div>
+    <div class="form-group"><label>Pri (Goud)</label><input type="number" id="prodPrice" placeholder="0" inputmode="numeric"></div>
+    <div class="form-group"><label>Kategori</label>
+      <select id="prodCategory">
+        <option value="Rad">👗 Rad</option>
+        <option value="Elektronik">📱 Elektronik</option>
+        <option value="Manje">🍎 Manje</option>
+        <option value="Bote">💄 Bote</option>
+        <option value="Lakay">🏠 Lakay</option>
+        <option value="Lot">📦 Lòt</option>
+      </select>
+    </div>
+    <div class="form-group"><label>Deskripsyon</label><textarea id="prodDesc" rows="3" placeholder="Dekri pwodwi ou..." style="resize:none"></textarea></div>
+    <button class="btn-primary" onclick="addProduct()">📦 Pibliye Pwodwi</button>
   </div>
 </div>
-
-<div id="toast"></div>
-
+<!-- BUY PLAN -->
+<div class="modal-overlay" id="buyPlanModal" onclick="if(event.target===this)closeModal('buyPlanModal')">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="buyPlanTitle">Achte Plan</div>
+    <p style="color:var(--gray);font-size:0.83rem;margin-bottom:14px">Voye lajan nan youn nan nimewo sa yo epi antre nimewo konfimasyon:</p>
+    <div class="payment-methods">
+      <div class="payment-method" onclick="selectPayment(this,'MonCash')">
+        <div class="payment-icon">📱</div>
+        <div><div class="payment-name">MonCash</div><div class="payment-num">Nimewo: 509-XXXX-XXXX</div></div>
+      </div>
+      <div class="payment-method" onclick="selectPayment(this,'NatCash')">
+        <div class="payment-icon">💳</div>
+        <div><div class="payment-name">NatCash</div><div class="payment-num">Nimewo: 509-XXXX-XXXX</div></div>
+      </div>
+      <div class="payment-method" onclick="selectPayment(this,'Virement')">
+        <div class="payment-icon">🏦</div>
+        <div><div class="payment-name">Virement Bankè</div><div class="payment-num">BNC / Sogebank / BUH</div></div>
+      </div>
+    </div>
+    <div class="form-group"><label>Nimewo Tranzaksyon</label><input type="text" id="transactionNum" placeholder="Ex: TXN123456789"></div>
+    <button class="btn-primary" onclick="confirmPayment()">✅ Konfime Peman</button>
+    <p style="text-align:center;margin-top:10px;font-size:0.76rem;color:var(--gray)">Admin ap verifye nan 24h</p>
+  </div>
+</div>
+<!-- ADMIN -->
+<div class="modal-overlay" id="adminModal" onclick="if(event.target===this)closeModal('adminModal')">
+  <div class="modal" style="max-height:88vh">
+    <div class="modal-handle"></div>
+    <div class="modal-title">👑 Admin Panel</div>
+    <div class="admin-stats">
+      <div class="stat-card"><div class="stat-number" id="statUsers">-</div><div class="stat-label">Itilizatè</div></div>
+      <div class="stat-card"><div class="stat-number" id="statProducts">-</div><div class="stat-label">Pwodwi</div></div>
+      <div class="stat-card"><div class="stat-number" id="statPending">-</div><div class="stat-label">An Atant</div></div>
+      <div class="stat-card"><div class="stat-number" id="statActive">-</div><div class="stat-label">Plan Aktif</div></div>
+    </div>
+    <div class="admin-section"><h3>⏳ Demann Plan</h3><div id="pendingRequests"><p style="color:var(--gray);font-size:0.83rem">Ap chaje...</p></div></div>
+    <div class="admin-section"><h3>👥 Tout Moun Yo</h3><div id="adminUsersList"><p style="color:var(--gray);font-size:0.83rem">Ap chaje...</p></div></div>
+  </div>
+</div>
+<!-- INSTALL BANNER -->
+<div id="installBanner">
+  <div class="install-row">
+    <div class="install-icon">🛍️</div>
+    <div class="install-text"><strong>Mache Likidasyon</strong><span>Ajoute app la sou ekran ou</span></div>
+  </div>
+  <div class="install-btns">
+    <button class="btn-install" id="btnInstall">📲 Mete sou Ekran</button>
+    <button class="btn-dismiss" onclick="dismissInstall()">Pa kounye a</button>
+  </div>
+</div>
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <button class="nav-item active" onclick="showTab('mache')"><span class="nav-icon">🛒</span>Mache</button>
+  <button class="nav-item" onclick="showTab('plan')"><span class="nav-icon">💎</span>Plan</button>
+  <button class="nav-item" onclick="handleAddProduct()"><div class="add-btn-circle">➕</div><span style="margin-top:2px">Ajoute</span></button>
+  <button class="nav-item" onclick="showTab('chat')"><span class="nav-icon">💬</span>Chat</button>
+  <button class="nav-item" onclick="showTab('profil')"><span class="nav-icon">👤</span>Mwen</button>
+</div>
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
-  import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, orderBy, query, where, onSnapshot, serverTimestamp, getDoc } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyDKjM9QtNlyp3y5s8aQhdDb85Afxy3ft0I",
-    authDomain: "pejamtv.firebaseapp.com",
-    projectId: "pejamtv",
-    storageBucket: "pejamtv.firebasestorage.app",
-    messagingSenderId: "958240325710",
-    appId: "1:958240325710:web:49cd3f2d983c055cdf431f"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db  = getFirestore(app);
-
-  // ── STATE ──
-  let currentUser = JSON.parse(localStorage.getItem('machann_user') || 'null');
-  let currentLang = localStorage.getItem('machann_lang') || 'ht';
-  let allProducts = [];
-  let allUsers = [];
-  let currentCat = 'tout';
-  let currentChat = null;
-  let chatUnsub = null;
-
-  // ── TRANSLATIONS ──
-  const T = {
-    ht: {
-      login:'Konekte', register:'Kreye Kont', market:'Mache', chat:'Chat',
-      directory:'Anyè', profile:'Pwofil', search:'Chèche', all:'Tout',
-      food:'Manje', clothes:'Rad', electronics:'Elektwonik', health:'Sante',
-      home:'Kay', other:'Lòt', loading:'Chajman...', not_logged:'Ou pa konekte',
-      login_to_sell:'Konekte pou vann pwodwi ou yo', no_conv:'Pa gen konvèsasyon',
-      select_conv:'Chwazi yon konvèsasyon', start_chat:'Kòmanse yon konvèsasyon ak yon machann',
-      conversations:'Konvèsasyon', name:'Non ou', phone:'Telefòn', password:'Modpas',
-      category:'Kategori', location:'Kote ou ye', no_account:'Pa gen kont?',
-      create_account:'Kreye Kont →', add_product:'Ajoute Pwodwi', product_name:'Non Pwodwi',
-      price:'Pri (Goud)', emoji_icon:'Emoji Ikòn', description:'Deskripsyon',
-      publish:'Pibliye →', contact_seller:'Kontakte Machann', my_products:'Pwodwi Mwen Yo',
-      sell_product:'Vann Pwodwi', logout:'Dekonekte', no_products:'Pa gen pwodwi ankò'
-    },
-    fr: {
-      login:'Connexion', register:'Créer un compte', market:'Marché', chat:'Chat',
-      directory:'Annuaire', profile:'Profil', search:'Chercher', all:'Tout',
-      food:'Nourriture', clothes:'Vêtements', electronics:'Électronique', health:'Santé',
-      home:'Maison', other:'Autre', loading:'Chargement...', not_logged:'Non connecté',
-      login_to_sell:'Connectez-vous pour vendre', no_conv:'Pas de conversations',
-      select_conv:'Sélectionnez une conversation', start_chat:'Commencez une conversation',
-      conversations:'Conversations', name:'Votre nom', phone:'Téléphone', password:'Mot de passe',
-      category:'Catégorie', location:'Votre localisation', no_account:'Pas de compte?',
-      create_account:'Créer un compte →', add_product:'Ajouter produit', product_name:'Nom du produit',
-      price:'Prix (Gourde)', emoji_icon:'Icône emoji', description:'Description',
-      publish:'Publier →', contact_seller:'Contacter vendeur', my_products:'Mes Produits',
-      sell_product:'Vendre produit', logout:'Déconnexion', no_products:'Aucun produit'
-    },
-    en: {
-      login:'Login', register:'Sign Up', market:'Market', chat:'Chat',
-      directory:'Directory', profile:'Profile', search:'Search', all:'All',
-      food:'Food', clothes:'Clothes', electronics:'Electronics', health:'Health',
-      home:'Home', other:'Other', loading:'Loading...', not_logged:'Not logged in',
-      login_to_sell:'Login to sell products', no_conv:'No conversations yet',
-      select_conv:'Select a conversation', start_chat:'Start a conversation with a seller',
-      conversations:'Conversations', name:'Your name', phone:'Phone', password:'Password',
-      category:'Category', location:'Your location', no_account:"Don't have an account?",
-      create_account:'Create Account →', add_product:'Add Product', product_name:'Product name',
-      price:'Price (Gourde)', emoji_icon:'Emoji icon', description:'Description',
-      publish:'Publish →', contact_seller:'Contact Seller', my_products:'My Products',
-      sell_product:'Sell Product', logout:'Logout', no_products:'No products yet'
-    }
-  };
-
-  function setLang(lang) {
-    currentLang = lang;
-    localStorage.setItem('machann_lang', lang);
-    document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent.toLowerCase() === lang));
-    document.querySelectorAll('[data-t]').forEach(el => {
-      const key = el.getAttribute('data-t');
-      if (T[lang][key]) el.textContent = T[lang][key];
-    });
-  }
-  window.setLang = setLang;
-
-  // ── TABS ──
-  function showTab(tab) {
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('sec-' + tab).classList.add('active');
-    document.getElementById('tab-' + tab).classList.add('active');
-    const fab = document.getElementById('fab');
-    fab.classList.toggle('show', isLoggedIn() && (tab === 'mache' || tab === 'profil'));
-  }
-  window.showTab = showTab;
-
-  // ── AUTH ──
-  function isLoggedIn() { return !!currentUser; }
-
-  async function doRegister() {
-    const name = document.getElementById('r-name').value.trim();
-    const phone = document.getElementById('r-phone').value.trim();
-    const pass = document.getElementById('r-pass').value;
-    const cat = document.getElementById('r-cat').value;
-    const loc = document.getElementById('r-loc').value.trim();
-    const wa = document.getElementById('r-wa').value.trim();
-    const err = document.getElementById('r-err');
-    if (!name || !phone || !pass || !loc) { err.style.display='block'; err.textContent='⚠️ Ranpli tout chan obligatwa yo.'; return; }
-    try {
-      // Check si telefòn deja existe
-      const snap = await getDocs(query(collection(db,'users'), where('phone','==',phone)));
-      if (!snap.empty) { err.style.display='block'; err.textContent='⚠️ Nimewo sa a deja itilize.'; return; }
-      const ref = await addDoc(collection(db,'users'), {name, phone, pass, cat, loc, wa, timestamp: Date.now()});
-      currentUser = {id: ref.id, name, phone, cat, loc, wa};
-      localStorage.setItem('machann_user', JSON.stringify(currentUser));
-      closeModal('register-modal');
-      updateUI();
-      showToast('✅ Kont kreye! Byenveni ' + name);
-      loadProducts();
-    } catch(e) { err.style.display='block'; err.textContent='❌ Erè. Eseye ankò.'; }
-  }
-  window.doRegister = doRegister;
-
-  async function doLogin() {
-    const phone = document.getElementById('l-phone').value.trim();
-    const pass = document.getElementById('l-pass').value;
-    const err = document.getElementById('l-err');
-    try {
-      const snap = await getDocs(query(collection(db,'users'), where('phone','==',phone), where('pass','==',pass)));
-      if (snap.empty) { err.style.display='block'; err.textContent='❌ Telefòn oswa modpas mal.'; return; }
-      const d = snap.docs[0];
-      currentUser = {id: d.id, ...d.data()};
-      localStorage.setItem('machann_user', JSON.stringify(currentUser));
-      closeModal('login-modal');
-      updateUI();
-      showToast('✅ Byenveni ' + currentUser.name + '!');
-      loadProducts();
-    } catch(e) { err.style.display='block'; err.textContent='❌ Erè koneksyon.'; }
-  }
-  window.doLogin = doLogin;
-
-  function logout() {
-    currentUser = null;
-    localStorage.removeItem('machann_user');
-    updateUI();
-    showToast('👋 Ou dekonekte.');
-  }
-  window.logout = logout;
-
-  // ── ABÒNMAN & PEMAN ──
-  const PLANS = { free:{maxProducts:3}, Debutan:{maxProducts:10}, Machann:{maxProducts:50}, Biznis:{maxProducts:999} };
-  let selectedPlanName = 'Machann', selectedPlanPrice = '1200', selectedPlanDesc = '1200g/mwa — 50 pwodwi';
-  let selectedFeaturedDesc = '500g — 1 semèn featured';
-
-  window.selectPlan = (el, name, price, desc) => {
-    document.querySelectorAll('#abonnman-modal .plan-card').forEach(c => c.classList.remove('selected'));
-    el.classList.add('selected');
-    selectedPlanName = name; selectedPlanPrice = price; selectedPlanDesc = desc;
-    document.getElementById('sub-plan-display').textContent = '📦 Plan: ' + desc;
-  };
-
-  window.selectFeatured = (el, name, price, desc) => {
-    document.querySelectorAll('#featured-modal .plan-card').forEach(c => c.classList.remove('selected'));
-    el.classList.add('selected');
-    selectedFeaturedDesc = desc;
-    document.getElementById('feat-plan-display').textContent = '🌟 Plan: ' + desc;
-  };
-
-  window.sendAbonnmanWA = () => {
-    const name = document.getElementById('sub-name').value.trim();
-    const phone = document.getElementById('sub-phone').value.trim();
-    if (!name || !phone) { showToast('⚠️ Antre non ak telefòn ou.'); return; }
-    const msg = `⭐ *Nouvo Abònman Mache Likidasyon*\n\n👤 Non: ${name}\n📞 Telefòn: ${phone}\n📦 Plan: ${selectedPlanDesc}\n\n✅ Mwen fin voye peman mwen an. Tanpri aktive kont mwen.`;
-    window.open('https://wa.me/50956565623?text=' + encodeURIComponent(msg), '_blank');
-    closeModal('abonnman-modal');
-    showToast('✅ Demand voye! Nou pral aktive kont ou.');
-  };
-
-  window.sendFeaturedWA = () => {
-    if (!isLoggedIn()) { openModal('login-modal'); return; }
-    const product = document.getElementById('feat-product').value.trim();
-    if (!product) { showToast('⚠️ Antre non pwodwi ou a.'); return; }
-    const msg = `🌟 *Demand Featured — Mache Likidasyon*\n\n👤 Machann: ${currentUser.name}\n📞 Telefòn: ${currentUser.phone}\n🛍️ Pwodwi: ${product}\n📦 Plan: ${selectedFeaturedDesc}\n\n✅ Mwen fin voye peman mwen an. Tanpri mete pwodwi mwen an featured.`;
-    window.open('https://wa.me/50956565623?text=' + encodeURIComponent(msg), '_blank');
-    closeModal('featured-modal');
-    showToast('✅ Demand voye! Nou pral mete pwodwi ou an featured.');
-  };
-
-  async function checkProductLimit() {
-    if (!isLoggedIn()) return false;
-    const snap = await getDocs(query(collection(db,'products'), where('sellerId','==',currentUser.id)));
-    const count = snap.size;
-    const max = PLANS[currentUser.plan||'free']?.maxProducts || 3;
-    if (count >= max) {
-      showToast(`⚠️ Ou rive nan limit ${max} pwodwi. Abòne pou plis!`);
-      setTimeout(() => openModal('abonnman-modal'), 1500);
-      return false;
-    }
-    return true;
-  }
-
-  function updateUI() {
-    const loggedIn = isLoggedIn();
-    document.getElementById('login-top-btn').textContent = loggedIn ? '👤 ' + currentUser.name : '🔐 Konekte';
-    document.getElementById('profil-logged-out').style.display = loggedIn ? 'none' : 'block';
-    document.getElementById('profil-logged-in').style.display = loggedIn ? 'block' : 'none';
-    document.getElementById('fab').classList.toggle('show', loggedIn);
-    if (loggedIn) {
-      document.getElementById('profil-avatar').textContent = currentUser.name[0].toUpperCase();
-      document.getElementById('profil-name').textContent = currentUser.name;
-      document.getElementById('profil-cat').textContent = currentUser.cat;
-      document.getElementById('profil-loc').textContent = '📍 ' + currentUser.loc;
-      loadMyProducts();
-    }
-  }
-
-  // ── PRODUCTS ──
-  async function loadProducts() {
-    try {
-      const q = query(collection(db,'products'), orderBy('timestamp','desc'));
-      onSnapshot(q, snap => {
-        allProducts = [];
-        snap.forEach(d => allProducts.push({id: d.id, ...d.data()}));
-        renderProducts(allProducts);
-      });
-    } catch(e) { console.error(e); }
-  }
-
-  function renderProducts(products) {
-    const grid = document.getElementById('product-grid');
-    const filtered = currentCat === 'tout' ? products : products.filter(p => p.cat === currentCat);
-    const search = document.getElementById('search-input').value.toLowerCase();
-    const final = search ? filtered.filter(p => p.name.toLowerCase().includes(search) || (p.desc||'').toLowerCase().includes(search)) : filtered;
-    if (final.length === 0) {
-      grid.innerHTML = `<div class="empty" style="grid-column:1/-1"><div>🛒</div><p>${T[currentLang].no_products}</p></div>`;
-      return;
-    }
-    grid.innerHTML = final.map(p => `
-      <div class="product-card" onclick="openDetail('${p.id}')">
-        <div class="product-img">
-          <div>${p.emoji||'📦'}</div>
-          ${p.new ? '<div class="product-badge">Nouvo</div>' : ''}
-        </div>
-        <div class="product-body">
-          <div class="product-name">${p.name}</div>
-          <div class="product-seller">👤 ${p.sellerName||'Machann'}</div>
-          <div class="product-price">${Number(p.price).toLocaleString()} G</div>
-          <div class="product-loc">📍 ${p.loc||''}</div>
-        </div>
-      </div>`).join('');
-  }
-
-  window.filterProducts = () => renderProducts(allProducts);
-  window.filterCat = (cat) => {
-    currentCat = cat;
-    document.querySelectorAll('.cat-pill').forEach(p => p.classList.toggle('active', p.dataset.cat === cat));
-    renderProducts(allProducts);
-  };
-
-  async function submitProduct() {
-    if (!isLoggedIn()) { openModal('login-modal'); return; }
-    const ok = await checkProductLimit();
-    if (!ok) return;
-    const name = document.getElementById('p-name').value.trim();
-    const price = document.getElementById('p-price').value;
-    const cat = document.getElementById('p-cat').value;
-    const emoji = document.getElementById('p-emoji').value;
-    const desc = document.getElementById('p-desc').value.trim();
-    const err = document.getElementById('p-err');
-    if (!name || !price) { err.style.display='block'; err.textContent='⚠️ Non ak pri obligatwa.'; return; }
-    err.style.display = 'none';
-    try {
-      await addDoc(collection(db,'products'), {
-        name, price: Number(price), cat, emoji, desc,
-        sellerId: currentUser.id,
-        sellerName: currentUser.name,
-        sellerPhone: currentUser.phone,
-        sellerWa: currentUser.wa||'',
-        loc: currentUser.loc,
-        commission: Math.round(Number(price) * 0.03),
-        new: true,
-        timestamp: Date.now()
-      });
-      closeModal('product-modal');
-      document.getElementById('p-name').value = '';
-      document.getElementById('p-price').value = '';
-      document.getElementById('p-desc').value = '';
-      showToast('✅ Pwodwi pibliye! Komisyon: 3% sou vant.');
-    } catch(e) { err.style.display='block'; err.textContent='❌ Erè. Eseye ankò.'; }
-  }
-  window.submitProduct = submitProduct;
-
-  async function loadMyProducts() {
-    if (!currentUser) return;
-    const q = query(collection(db,'products'), where('sellerId','==',currentUser.id), orderBy('timestamp','desc'));
-    onSnapshot(q, snap => {
-      const prods = [];
-      snap.forEach(d => prods.push({id:d.id,...d.data()}));
-      const grid = document.getElementById('my-products-grid');
-      if (prods.length === 0) { grid.innerHTML = `<div class="empty" style="grid-column:1/-1"><div>🛒</div><p>${T[currentLang].no_products}</p></div>`; return; }
-      grid.innerHTML = prods.map(p => `
-        <div class="product-card" style="position:relative;">
-          <div class="product-img"><div>${p.emoji||'📦'}</div></div>
-          <div class="product-body">
-            <div class="product-name">${p.name}</div>
-            <div class="product-price">${Number(p.price).toLocaleString()} G</div>
-          </div>
-          <button onclick="deleteProduct('${p.id}')" style="position:absolute;top:8px;right:8px;background:var(--red);color:#fff;border:none;padding:0.2rem 0.5rem;font-size:0.75rem;cursor:pointer;border-radius:4px;">🗑️</button>
-        </div>`).join('');
-    });
-  }
-
-  window.deleteProduct = async (id) => {
-    if (!confirm('Efase pwodwi sa a?')) return;
-    await deleteDoc(doc(db,'products',id));
-    showToast('🗑️ Pwodwi efase.');
-  };
-
-  // ── PRODUCT DETAIL ──
-  window.openDetail = async (id) => {
-    const p = allProducts.find(x => x.id === id);
-    if (!p) return;
-    document.getElementById('det-title').textContent = p.name;
-    document.getElementById('det-emoji').textContent = p.emoji||'📦';
-    document.getElementById('det-price').textContent = Number(p.price).toLocaleString() + ' Goud';
-    document.getElementById('det-seller').textContent = '👤 ' + (p.sellerName||'Machann') + ' · 📍 ' + (p.loc||'');
-    document.getElementById('det-desc').textContent = p.desc||'';
-    document.getElementById('det-loc').textContent = '📍 ' + (p.loc||'');
-    // Komisyon
-    const comm = p.commission || Math.round(p.price * 0.03);
-    const commDiv = document.getElementById('det-commission');
-    commDiv.style.display = 'block'; commDiv.style.cursor='pointer'; commDiv.onclick=()=>openModal('pay-modal');
-    commDiv.textContent = `💸 Komisyon platfòm (3%): ${comm}g — peye apre vant`;
-    // Featured button pou machann pwòp pwodwi
-    const featBtn = document.getElementById('det-featured-btn');
-    featBtn.style.display = (isLoggedIn() && p.sellerId === currentUser.id) ? 'block' : 'none';
-    document.getElementById('det-chat-btn').onclick = () => { closeModal('detail-modal'); startChat(p.sellerId, p.sellerName); };
-    document.getElementById('det-wa-btn').onclick = () => {
-      const wa = p.sellerWa || p.sellerPhone;
-      if (wa) window.open('https://wa.me/509' + wa.replace(/\D/g,'') + '?text=' + encodeURIComponent('Bonjou! Mwen enterese nan pwodwi ou a: ' + p.name + ' (' + p.price + ' Goud)'), '_blank');
-      else showToast('⚠️ Machann sa a pa gen WhatsApp.');
-    };
-    openModal('detail-modal');
-  };
-
-  // ── CHAT ──
-  async function startChat(sellerId, sellerName) {
-    if (!isLoggedIn()) { openModal('login-modal'); return; }
-    if (sellerId === currentUser.id) { showToast('⚠️ Ou pa ka kominike ak tèt ou!'); return; }
-    const chatId = [currentUser.id, sellerId].sort().join('_');
-    currentChat = {id: chatId, otherId: sellerId, otherName: sellerName};
-    showTab('chat');
-    renderChatWindow();
-    loadMessages();
-    loadChatList();
-  }
-  window.startChat = startChat;
-
-  function renderChatWindow() {
-    if (!currentChat) return;
-    document.getElementById('chat-with-avatar').textContent = currentChat.otherName[0].toUpperCase();
-    document.getElementById('chat-with-name').textContent = currentChat.otherName;
-    document.getElementById('chat-input-area').style.display = 'flex';
-  }
-
-  function loadMessages() {
-    if (chatUnsub) chatUnsub();
-    const q = query(collection(db, 'chats', currentChat.id, 'messages'), orderBy('timestamp'));
-    chatUnsub = onSnapshot(q, snap => {
-      const msgs = [];
-      snap.forEach(d => msgs.push({id:d.id,...d.data()}));
-      const box = document.getElementById('chat-messages');
-      if (msgs.length === 0) {
-        box.innerHTML = '<div class="chat-empty"><div style="font-size:2rem;">👋</div><p>Di bonjou!</p></div>';
-        return;
-      }
-      box.innerHTML = msgs.map(m => `
-        <div>
-          <div class="msg ${m.senderId === currentUser.id ? 'me' : 'them'}">${m.text}</div>
-          <div style="font-size:0.65rem;color:var(--gray);${m.senderId===currentUser.id?'text-align:right;':''}margin-top:2px;">${m.time||''}</div>
-        </div>`).join('');
-      box.scrollTop = box.scrollHeight;
-    });
-  }
-
-  async function sendMsg() {
-    if (!isLoggedIn() || !currentChat) return;
-    const input = document.getElementById('msg-input');
-    const text = input.value.trim();
-    if (!text) return;
-    input.value = '';
-    const now = new Date();
-    const time = now.getHours()+':'+String(now.getMinutes()).padStart(2,'0');
-    try {
-      // Asire chat document egziste
-      await addDoc(collection(db, 'chats', currentChat.id, 'messages'), {
-        text, senderId: currentUser.id, senderName: currentUser.name,
-        receiverId: currentChat.otherId, time, timestamp: Date.now()
-      });
-    } catch(e) { console.error(e); }
-  }
-  window.sendMsg = sendMsg;
-
-  async function loadChatList() {
-    if (!isLoggedIn()) return;
-    // Chèche tout konvèsasyon kote user a patisipe
-    const list = document.getElementById('chat-list');
-    list.innerHTML = '<div style="padding:1rem;color:var(--gray);font-size:0.82rem;">Chajman...</div>';
-    try {
-      const snap = await getDocs(collection(db,'users'));
-      const users = {};
-      snap.forEach(d => users[d.id] = d.data());
-      // Montre yon lis moun ou ka chat ak yo
-      const otherUsers = Object.entries(users).filter(([id]) => id !== currentUser.id);
-      if (otherUsers.length === 0) { list.innerHTML = '<div class="empty"><div>💬</div><p>Pa gen machann ankò</p></div>'; return; }
-      list.innerHTML = otherUsers.map(([id, u]) => `
-        <div class="chat-item ${currentChat?.otherId===id?'active':''}" onclick="startChatById('${id}','${u.name}')">
-          <div class="chat-avatar">${u.name[0].toUpperCase()}</div>
-          <div class="chat-info">
-            <div class="chat-name">${u.name}</div>
-            <div class="chat-preview">${u.cat||''} · ${u.loc||''}</div>
-          </div>
-        </div>`).join('');
-    } catch(e) { console.error(e); }
-  }
-
-  window.startChatById = (id, name) => startChat(id, name);
-
-  // ── DIRECTORY ──
-  async function loadDirectory() {
-    try {
-      onSnapshot(collection(db,'users'), snap => {
-        allUsers = [];
-        snap.forEach(d => allUsers.push({id:d.id,...d.data()}));
-        renderDirectory(allUsers);
-      });
-    } catch(e) { console.error(e); }
-  }
-
-  function renderDirectory(users) {
-    const grid = document.getElementById('dir-grid');
-    const search = document.getElementById('dir-search').value.toLowerCase();
-    const filtered = search ? users.filter(u => u.name.toLowerCase().includes(search) || (u.loc||'').toLowerCase().includes(search) || (u.cat||'').toLowerCase().includes(search)) : users;
-    if (filtered.length === 0) {
-      grid.innerHTML = '<div class="empty" style="grid-column:1/-1"><div>📋</div><p>Pa gen machann ankò</p></div>';
-      return;
-    }
-    grid.innerHTML = filtered.map(u => `
-      <div class="dir-card">
-        <div class="dir-top">
-          <div class="dir-avatar">${u.name[0].toUpperCase()}</div>
-          <div>
-            <div class="dir-name">${u.name}</div>
-            <div class="dir-cat">${u.cat||''}</div>
-          </div>
-        </div>
-        <div class="dir-info">
-          📍 ${u.loc||'—'}<br/>
-          📞 ${u.phone||'—'}
-        </div>
-        <div class="dir-actions">
-          ${u.wa ? `<a class="dir-btn dir-btn-wa" href="https://wa.me/509${(u.wa||u.phone||'').replace(/\D/g,'')}" target="_blank">📱 WhatsApp</a>` : ''}
-          <button class="dir-btn dir-btn-chat" onclick="startChat('${u.id}','${u.name}')">💬 Chat</button>
-        </div>
-      </div>`).join('');
-  }
-
-  window.filterDir = () => renderDirectory(allUsers);
-
-  // ── MODALS ──
-  window.openModal = (id) => { document.getElementById(id).classList.add('open'); };
-  window.closeModal = (id) => { document.getElementById(id).classList.remove('open'); };
-
-  // ── FAB ──
-  window.toggleFabMenu = () => {
-    const menu = document.getElementById('fab-menu');
-    menu.classList.toggle('show');
-  };
-
-  // ── TOAST ──
-  function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.style.display = 'block';
-    setTimeout(() => t.style.display = 'none', 3000);
-  }
-  window.showToast = showToast;
-
-  // ── INIT ──
-  window.addEventListener('load', () => {
-    setLang(currentLang);
-    updateUI();
-    loadProducts();
-    loadDirectory();
-    if (isLoggedIn()) loadChatList();
-  });
-
-  // Close fab menu when clicking outside
-  document.addEventListener('click', e => {
-    if (!e.target.closest('#fab') && !e.target.closest('#fab-menu')) {
-      document.getElementById('fab-menu').classList.remove('show');
-    }
-  });
+import{initializeApp}from"https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
+import{getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged,sendPasswordResetEmail}from"https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
+import{getFirestore,collection,addDoc,getDocs,doc,updateDoc,onSnapshot,query,orderBy,where,getDoc,setDoc,serverTimestamp}from"https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
+import{getStorage,ref,uploadBytes,getDownloadURL}from"https://www.gstatic.com/firebasejs/11.0.0/firebase-storage.js";
+const cfg={apiKey:"AIzaSyCJqrx2Ms5kpOREq0Y7eatttE8vzv_qS-E",authDomain:"mache-likidasyon.firebaseapp.com",projectId:"mache-likidasyon",storageBucket:"mache-likidasyon.firebasestorage.app",messagingSenderId:"279618275942",appId:"1:279618275942:web:af86a9ad24067f6d1fbba7"};
+const app=initializeApp(cfg),auth=getAuth(app),db=getFirestore(app),storage=getStorage(app);
+const ADMIN="admin@machelikidasyon.com";
+let curUser=null,curUD=null,curProd=null,curPartner=null,selPlan=null,selPay=null,allProds=[],chatUnsub=null;
+if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;if(!localStorage.getItem('installDismissed'))setTimeout(()=>document.getElementById('installBanner').style.display='block',3000);});
+document.getElementById('btnInstall').addEventListener('click',async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();const{outcome}=await deferredPrompt.userChoice;if(outcome==='accepted')toast('✅ App mete sou ekran!');deferredPrompt=null;document.getElementById('installBanner').style.display='none';});
+window.dismissInstall=()=>{localStorage.setItem('installDismissed','1');document.getElementById('installBanner').style.display='none';};
+window.addEventListener('online',()=>document.getElementById('offlineBanner').style.display='none');
+window.addEventListener('offline',()=>document.getElementById('offlineBanner').style.display='block');
+window.login=async()=>{const e=document.getElementById('loginEmail').value.trim(),p=document.getElementById('loginPass').value;if(!e||!p)return toast('Ranpli tout chan yo');try{await signInWithEmailAndPassword(auth,e,p);closeModal('loginModal');toast('✅ Byenvini!');}catch{toast('❌ Email oswa modpas enkòrèk');}};
+window.signup=async()=>{const n=document.getElementById('signupName').value.trim(),e=document.getElementById('signupEmail').value.trim(),ph=document.getElementById('signupPhone').value.trim(),p=document.getElementById('signupPass').value;if(!n||!e||!p)return toast('Ranpli tout chan yo');if(p.length<6)return toast('Modpas dwe gen omwen 6 karaktè');try{const c=await createUserWithEmailAndPassword(auth,e,p);await setDoc(doc(db,'users',c.user.uid),{name:n,email:e,phone:ph,plan:null,planExpiry:null,status:'active',isAdmin:false,productCount:0,createdAt:serverTimestamp()});closeModal('signupModal');toast('✅ Kont kreye! Achte yon plan pou vann.');}catch(err){toast('❌ '+(err.code==='auth/email-already-in-use'?'Email sa a deja itilize':err.message));}};
+window.resetPass=async e=>{e.preventDefault();const em=document.getElementById('loginEmail').value.trim();if(!em)return toast('Antre email ou premye');try{await sendPasswordResetEmail(auth,em);toast('📧 Email reyinisyalizasyon voye!');}catch{toast('❌ Email pa trouve');}};
+window.logout=async()=>{await signOut(auth);toast('Ou dekonekte');};
+onAuthStateChanged(auth,async u=>{curUser=u;if(u){const s=await getDoc(doc(db,'users',u.uid));curUD=s.exists()?s.data():{};document.getElementById('navBtns').style.display='none';document.getElementById('navUser').style.display='block';document.getElementById('navUser').textContent='👤 '+(curUD?.name?.split(' ')[0]||'Mwen');updateProfil();loadChatList();}else{curUD=null;document.getElementById('navBtns').style.display='flex';document.getElementById('navUser').style.display='none';updateProfil();}});
+function loadProducts(){const q=query(collection(db,'products'),orderBy('createdAt','desc'));onSnapshot(q,snap=>{allProds=snap.docs.map(d=>({id:d.id,...d.data()}));renderProds(allProds);});}
+function renderProds(p){const g=document.getElementById('productsGrid');if(!p.length){g.innerHTML='<div class="empty-state" style="grid-column:1/-1"><div class="icon">🛍️</div><p>Pa gen pwodwi kounye a</p></div>';return;}const sp=p.filter(x=>x.sponsored),rg=p.filter(x=>!x.sponsored);g.innerHTML=[...sp,...rg].map(x=>`<div class="product-card ${x.sponsored?'sponsored':''}" onclick="openProd('${x.id}')">${x.sponsored?'<div class="sponsored-badge">⭐ Sponsorisé</div>':''}<div class="product-img">${x.imageUrl?`<img src="${x.imageUrl}" alt="${x.name}" loading="lazy">`:catE(x.category)}</div><div class="product-info"><div class="product-name">${x.name}</div><div class="product-price">${Number(x.price).toLocaleString()}G</div><div class="product-seller">👤 ${x.sellerName||'Vandè'}</div></div></div>`).join('');}
+window.filterProducts=()=>{const q=document.getElementById('searchInput').value.toLowerCase();renderProds(q?allProds.filter(p=>p.name.toLowerCase().includes(q)||(p.category||'').toLowerCase().includes(q)):allProds);};
+window.openProd=id=>{const p=allProds.find(x=>x.id===id);if(!p)return;curProd=p;document.getElementById('detailImg').innerHTML=p.imageUrl?`<img src="${p.imageUrl}" alt="${p.name}">`:catE(p.category);document.getElementById('detailPrice').textContent=Number(p.price).toLocaleString()+'G';document.getElementById('detailName').textContent=p.name;document.getElementById('detailDesc').textContent=p.description||'Pa gen deskripsyon';document.getElementById('detailSeller').innerHTML=`<div style="width:38px;height:38px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;flex-shrink:0">${(p.sellerName||'V')[0]}</div><div><div style="font-weight:600;font-size:0.88rem">${p.sellerName||'Vandè'}</div><div style="font-size:0.72rem;color:var(--gray)">Vandè Verifye ✅</div></div>`;document.getElementById('productDetail').classList.add('open');};
+window.closeDetail=()=>document.getElementById('productDetail').classList.remove('open');
+window.chatWithSeller=()=>{if(!curUser)return openModal('loginModal');if(!curProd||curProd.sellerId===curUser.uid)return toast('Se pwodwi pa ou!');curPartner={uid:curProd.sellerId,name:curProd.sellerName};openChatWin();closeDetail();};
+window.handleAddProduct=()=>{if(!curUser)return openModal('loginModal');if(!curUD?.plan)return toast('❌ Achte yon plan pou ajoute pwodwi');openModal('addProductModal');};
+window.previewImage=inp=>{const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=e=>{const i=document.getElementById('imgPreview');i.src=e.target.result;i.style.display='block';};r.readAsDataURL(f);};
+window.addProduct=async()=>{if(!curUser)return;const n=document.getElementById('prodName').value.trim(),pr=document.getElementById('prodPrice').value,cat=document.getElementById('prodCategory').value,desc=document.getElementById('prodDesc').value.trim(),imgF=document.getElementById('productImgFile').files[0];if(!n||!pr)return toast('Ranpli non ak pri');const lim={Basik:10,Pro:30,Premium:100};const lm=lim[curUD?.plan]||0;if((curUD?.productCount||0)>=lm)return toast(`❌ Limit ${lm} pwodwi pou plan ${curUD?.plan}`);toast('⏳ Ap pibliye...');try{let imgUrl='';if(imgF){const ir=ref(storage,`products/${curUser.uid}/${Date.now()}_${imgF.name}`);await uploadBytes(ir,imgF);imgUrl=await getDownloadURL(ir);}await addDoc(collection(db,'products'),{name:n,price:Number(pr),category:cat,description:desc,imageUrl:imgUrl,sellerId:curUser.uid,sellerName:curUD?.name||'Vandè',sponsored:false,createdAt:serverTimestamp()});await updateDoc(doc(db,'users',curUser.uid),{productCount:(curUD?.productCount||0)+1});curUD.productCount=(curUD.productCount||0)+1;closeModal('addProductModal');toast('✅ Pwodwi pibliye!');['prodName','prodPrice','prodDesc'].forEach(id=>document.getElementById(id).value='');document.getElementById('imgPreview').style.display='none';document.getElementById('productImgFile').value='';}catch(e){toast('❌ '+e.message);}};
+window.buyPlan=(plan,price)=>{if(!curUser)return openModal('loginModal');selPlan={name:plan,price};document.getElementById('buyPlanTitle').textContent=`💎 Plan ${plan} — ${price.toLocaleString()}G/mwa`;selPay=null;document.querySelectorAll('.payment-method').forEach(x=>x.classList.remove('selected'));openModal('buyPlanModal');};
+window.selectPayment=(el,m)=>{document.querySelectorAll('.payment-method').forEach(x=>x.classList.remove('selected'));el.classList.add('selected');selPay=m;};
+window.confirmPayment=async()=>{if(!curUser||!selPlan)return;if(!selPay)return toast('Chwazi yon metòd peman');const tx=document.getElementById('transactionNum').value.trim();if(!tx)return toast('Antre nimewo tranzaksyon an');try{await addDoc(collection(db,'planRequests'),{userId:curUser.uid,userName:curUD?.name,userEmail:curUser.email,plan:selPlan.name,price:selPlan.price,paymentMethod:selPay,transactionNum:tx,status:'pending',createdAt:serverTimestamp()});closeModal('buyPlanModal');document.getElementById('transactionNum').value='';toast('✅ Demann voye! Admin ap verifye.');}catch(e){toast('❌ '+e.message);}};
+window.buyPub=()=>{if(!curUser)return openModal('loginModal');if(!curUD?.plan)return toast('❌ Bezwen yon plan pou fè piblisite');toast('📞 Kontakte admin pou piblisite');setTimeout(contactAdmin,800);};
+const getChatId=(a,b)=>[a,b].sort().join('_');
+window.openChatWin=()=>{if(!curPartner)return;document.getElementById('chatPartnerName').textContent=curPartner.name;document.getElementById('chatAvatarH').textContent=(curPartner.name||'?')[0].toUpperCase();document.getElementById('chatWindow').classList.add('open');loadMsgs();};
+window.closeChatWindow=()=>{document.getElementById('chatWindow').classList.remove('open');if(chatUnsub){chatUnsub();chatUnsub=null;}};
+function loadMsgs(){if(chatUnsub)chatUnsub();const cid=getChatId(curUser.uid,curPartner.uid);const q=query(collection(db,'chats',cid,'messages'),orderBy('createdAt'));chatUnsub=onSnapshot(q,snap=>{const c=document.getElementById('chatMessages');c.innerHTML=snap.docs.map(d=>{const m=d.data(),sent=m.senderId===curUser.uid,t=m.createdAt?.toDate?m.createdAt.toDate().toLocaleTimeString('ht',{hour:'2-digit',minute:'2-digit'}):'';return`<div class="msg ${sent?'sent':'received'}">${m.text}<div class="msg-time">${t}</div></div>`;}).join('');c.scrollTop=c.scrollHeight;});}
+window.sendMessage=async()=>{if(!curUser||!curPartner)return;const inp=document.getElementById('chatInput'),txt=inp.value.trim();if(!txt)return;inp.value='';const cid=getChatId(curUser.uid,curPartner.uid);await setDoc(doc(db,'chats',cid),{participants:[curUser.uid,curPartner.uid],lastMessage:txt,lastUpdated:serverTimestamp()},{merge:true});await addDoc(collection(db,'chats',cid,'messages'),{text:txt,senderId:curUser.uid,createdAt:serverTimestamp()});};
+function loadChatList(){if(!curUser)return;const q=query(collection(db,'chats'),where('participants','array-contains',curUser.uid));onSnapshot(q,async snap=>{const cl=document.getElementById('chatList');if(snap.empty){cl.innerHTML='<div class="empty-state"><div class="icon">💬</div><p>Pa gen konvèsasyon</p></div>';return;}let h='<div class="chat-list">';for(const d of snap.docs){const chat=d.data(),pid=chat.participants.find(x=>x!==curUser.uid);try{const ps=await getDoc(doc(db,'users',pid)),p=ps.data();h+=`<div class="chat-item" onclick="openExChat('${pid}','${(p?.name||'Moun').replace(/'/g,"\\'")}')"><div class="chat-avatar">${(p?.name||'?')[0]}</div><div class="chat-info"><div class="chat-name">${p?.name||'Moun'}</div><div class="chat-last">${chat.lastMessage||''}</div></div></div>`;}catch{}}h+='</div>';cl.innerHTML=h;});}
+window.openExChat=(uid,name)=>{curPartner={uid,name};openChatWin();};
+function updateProfil(){const c=document.getElementById('profilContent');if(!curUser||!curUD){c.innerHTML='<div class="empty-state"><div class="icon">👤</div><p>Konekte pou wè pwofil ou</p><button class="btn-primary" style="margin-top:14px" onclick="openModal(\'loginModal\')">Konekte</button></div>';return;}const isAdm=curUD.isAdmin||curUser.email===ADMIN;c.innerHTML=`<div class="profile-header"><div class="profile-avatar">${(curUD.name||'M')[0]}</div><div class="profile-name">${curUD.name||'Itilizatè'}</div><div class="profile-plan">${curUD.plan?'💎 Plan '+curUD.plan:'⚠️ Pa gen Plan'}</div></div><div class="profile-menu">${isAdm?'<div class="profile-menu-item" onclick="openAdmin()"><span class="menu-icon">👑</span> Admin Panel <span class="menu-arrow">›</span></div>':''}<div class="profile-menu-item" onclick="handleAddProduct()"><span class="menu-icon">➕</span> Ajoute Pwodwi <span class="menu-arrow">›</span></div><div class="profile-menu-item" onclick="showTab(\'plan\')"><span class="menu-icon">💎</span> Achte / Renouvle Plan <span class="menu-arrow">›</span></div><div class="profile-menu-item" onclick="contactAdmin()"><span class="menu-icon">💬</span> Kontakte Admin <span class="menu-arrow">›</span></div><div class="profile-menu-item" onclick="logout()" style="color:var(--red)"><span class="menu-icon">🚪</span> Dekonekte <span class="menu-arrow">›</span></div></div><div style="padding:0 14px;margin-bottom:90px"><div style="background:white;border-radius:12px;padding:14px"><div style="font-weight:700;margin-bottom:10px;font-size:0.9rem">📊 Estatistik ou</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><div style="background:var(--cream);border-radius:8px;padding:12px;text-align:center"><div style="font-size:1.4rem;font-weight:700;color:var(--green)">${curUD.productCount||0}</div><div style="font-size:0.72rem;color:var(--gray)">Pwodwi Pibliye</div></div><div style="background:var(--cream);border-radius:8px;padding:12px;text-align:center"><div style="font-size:1.1rem;font-weight:700;color:var(--green)">${curUD.plan||'Okenn'}</div><div style="font-size:0.72rem;color:var(--gray)">Plan Aktif</div></div></div></div></div>`;}
+window.openAdmin=()=>{openModal('adminModal');loadAdminData();};
+async function loadAdminData(){try{const[us,ps,rs]=await Promise.all([getDocs(collection(db,'users')),getDocs(collection(db,'products')),getDocs(query(collection(db,'planRequests'),where('status','==','pending')))]);document.getElementById('statUsers').textContent=us.size;document.getElementById('statProducts').textContent=ps.size;document.getElementById('statPending').textContent=rs.size;document.getElementById('statActive').textContent=[...us.docs].filter(d=>d.data().plan).length;let ph='';rs.forEach(d=>{const r=d.data();ph+=`<div class="user-item"><div class="user-avatar-sm">${(r.userName||'?')[0]}</div><div class="user-info"><div class="user-name">${r.userName} — Plan ${r.plan}</div><div class="user-plan">${r.paymentMethod} | ${r.transactionNum} | ${r.price}G</div></div><div class="user-actions"><button class="btn-xs btn-approve" onclick="approvePlan('${d.id}','${r.userId}','${r.plan}')">✅</button><button class="btn-xs btn-block" onclick="rejectPlan('${d.id}')">❌</button></div></div>`;});document.getElementById('pendingRequests').innerHTML=ph||'<p style="color:var(--gray);font-size:0.82rem">Pa gen demann</p>';let uh='';us.forEach(d=>{const u=d.data();uh+=`<div class="user-item"><div class="user-avatar-sm">${(u.name||'?')[0]}</div><div class="user-info"><div class="user-name">${u.name||'Sans non'}</div><div class="user-plan">${u.plan?'💎 '+u.plan:'Pa gen plan'} | ${u.productCount||0} pwodwi</div></div><div class="user-actions">${u.plan?`<button class="btn-xs btn-block" onclick="blockUser('${d.id}')">🚫</button>`:''}</div></div>`;});document.getElementById('adminUsersList').innerHTML=uh||'<p style="color:var(--gray);font-size:0.82rem">Pa gen moun</p>';}catch(e){toast('❌ Admin erè: '+e.message);}}
+window.approvePlan=async(rid,uid,plan)=>{const exp=new Date();exp.setMonth(exp.getMonth()+1);await updateDoc(doc(db,'users',uid),{plan,planExpiry:exp,status:'active'});await updateDoc(doc(db,'planRequests',rid),{status:'approved'});toast('✅ Plan aktive!');loadAdminData();};
+window.rejectPlan=async rid=>{await updateDoc(doc(db,'planRequests',rid),{status:'rejected'});toast('❌ Demann refize');loadAdminData();};
+window.blockUser=async uid=>{await updateDoc(doc(db,'users',uid),{plan:null,status:'blocked'});toast('🚫 Moun dezabòne');loadAdminData();};
+window.contactAdmin=()=>window.open('https://wa.me/50956565623','_blank');
+function catE(c){return{Rad:'👗',Elektronik:'📱',Manje:'🍎',Bote:'💄',Lakay:'🏠',Lot:'📦'}[c]||'📦';}
+window.showTab=tab=>{document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById('sec-'+tab).classList.add('active');['mache','plan','pub','chat','profil'].forEach((t,i)=>{if(t===tab)document.querySelectorAll('.tab')[i]?.classList.add('active');});if(tab==='profil')updateProfil();};
+window.openModal=id=>document.getElementById(id).classList.add('open');
+window.closeModal=id=>document.getElementById(id).classList.remove('open');
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.className='toast show';setTimeout(()=>t.className='toast',3200);}
+loadProducts();
 </script>
-  <script type="module">
-import{initializeApp}from"https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
-import{getFirestore}from"https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
-const firebaseConfig={apiKey:"AIzaSyCJqrx2Ms5kpOREq0Y7eat",authDomain:"mache-likidasyon.firebaseapp.com",projectId:"mache-likidasyon",storageBucket:"mache-likidasyon.firebasestorage.app",messagingSenderId:"279618275942",appId:"1:279618275942:web:b52c8b4b9"};
-const app=initializeApp(firebaseConfig);
-const db=getFirestore(app);
-window.db=db;
-</script>
-<script>
-window.paymentInfo={moncash:"36911132",natcash:"56565623",zelle:"+19293486499"};
-</script>
-</script>
-  <div id="pay-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:9999;justify-content:center;align-items:center">
-<div style="background:#fff;padding:2rem;border-radius:1rem;max-width:350px;width:90%">
-<h3 style="margin-bottom:1rem">Peye kòmand ou</h3>
-<p>💚 MonCash: <b>36911132</b></p>
-<p>📱 Natcash: <b>56565623</b></p>
-<p>💵 Zelle: <b>+19293486499</b></p>
-<button onclick="document.getElementById('pay-modal').style.display='none'" style="margin-top:1rem;padding:0.5rem 1rem;background:#16a34a;color:#fff;border:none;border-radius:0.5rem">Fèmen</button>
-</div></div></script><script></script>
-<script>window.paymentInfo={moncash:"36911132",natcash:"56565623",zelle:"+19293486499"};
-</script>
-<!-- ADMIN MODAL -->
-<div class="overlay" id="admin-modal" onclick="if(event.target===this)closeModal('admin-modal')">
-<div class="modal" style="max-width:600px">
-<div class="modal-head"><h2>🔐 Admin Panel</h2><button class="modal-close" onclick="closeModal('admin-modal')">✕</button></div>
-<div class="modal-body">
-<div id="admin-content"></div>
-</div>
-</div>
-</div>
-</body></html>
+</body>
+</html>
