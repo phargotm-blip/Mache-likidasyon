@@ -979,6 +979,14 @@ const db=getFirestore(app);
 window.db=db;
 </script>
   <script>
+    <div id="pay-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:9999;justify-content:center;align-items:center">
+<div style="background:#fff;padding:2rem;border-radius:1rem;max-width:350px;width:90%">
+<h3 style="margin-bottom:1rem">Peye kòmand ou</h3>
+<p>💚 MonCash: <b>36911132</b></p>
+<p>📱 Natcash: <b>56565623</b></p>
+<p>💵 Zelle: <b>+19293486499</b></p>
+<button onclick="document.getElementById('pay-modal').style.display='none'" style="margin-top:1rem;padding:0.5rem 1rem;background:#16a34a;color:#fff;border:none;border-radius:0.5rem">Fèmen</button>
+</div></div>
 window.paymentInfo={moncash:"36911132",natcash:"56565623",zelle:"+19293486499"};
 </script>
 </body>
