@@ -985,8 +985,16 @@ window.db=db;
 <p>📱 Natcash: <b>56565623</b></p>
 <p>💵 Zelle: <b>+19293486499</b></p>
 <button onclick="document.getElementById('pay-modal').style.display='none'" style="margin-top:1rem;padding:0.5rem 1rem;background:#16a34a;color:#fff;border:none;border-radius:0.5rem">Fèmen</button>
-</div></div>
+</div></div></script><script></script>
 window.paymentInfo={moncash:"36911132",natcash:"56565623",zelle:"+19293486499"};
 </script>
-</body>
-</html>
+<!-- ADMIN MODAL -->
+<div class="overlay" id="admin-modal" onclick="if(event.target===this)closeModal('admin-modal')">
+<div class="modal" style="max-width:600px">
+<div class="modal-head"><h2>🔐 Admin Panel</h2><button class="modal-close" onclick="closeModal('admin-modal')">✕</button></div>
+<div class="modal-body">
+<div id="admin-content"></div>
+</div>
+</div>
+</div>
+</body></html>
