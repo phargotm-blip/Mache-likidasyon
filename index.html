@@ -359,6 +359,22 @@
         <div class="form-group"><label>Espesyalite *</label><input type="text" id="r-spec" placeholder="Ex: Legim, Rad..."/></div>
         <div class="form-group"><label>Telefon *</label><input type="tel" id="r-phone" placeholder="509-..."/></div>
         <div class="form-group"><label>Zon</label><input type="text" id="r-location" placeholder="Ex: Delmas 31..."/></div>
+        <!-- PAYMENT STEP FOR MACHANN -->
+        <div style="background:linear-gradient(135deg,#0d2416,#0a1a0f);border-radius:12px;padding:14px;margin-top:4px;">
+          <div style="color:var(--gold-light);font-size:12px;font-weight:700;margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;">&#128179; Frè Enskri Machann</div>
+          <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:10px;">Peye <strong style="color:var(--gold-light);">200 HTG</strong> pou aktive kont machann ou. Admin pral verifye peman an epi apwouve ou.</div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.07);">
+            <div style="width:38px;height:38px;border-radius:8px;background:linear-gradient(135deg,#d4a017,#f5c842);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#1a1a1a;flex-shrink:0;">MC</div>
+            <div style="flex:1;"><div style="font-size:9px;color:rgba(255,255,255,0.45);text-transform:uppercase;">Moncash</div><div style="font-size:17px;font-weight:700;color:white;letter-spacing:1px;">3691-1132</div></div>
+            <button onclick="copyNum('36911132','Moncash')" style="background:rgba(255,255,255,0.1);border:none;color:white;padding:6px 10px;border-radius:8px;font-size:11px;cursor:pointer;font-family:'Outfit',sans-serif;">Kopye</button>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 0;">
+            <div style="width:38px;height:38px;border-radius:8px;background:linear-gradient(135deg,#0055aa,#0088ff);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:white;flex-shrink:0;">NC</div>
+            <div style="flex:1;"><div style="font-size:9px;color:rgba(255,255,255,0.45);text-transform:uppercase;">Natcash</div><div style="font-size:17px;font-weight:700;color:white;letter-spacing:1px;">5656-5623</div></div>
+            <button onclick="copyNum('56565623','Natcash')" style="background:rgba(255,255,255,0.1);border:none;color:white;padding:6px 10px;border-radius:8px;font-size:11px;cursor:pointer;font-family:'Outfit',sans-serif;">Kopye</button>
+          </div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.4);text-align:center;margin-top:8px;">Apre peman, klike Enskri — Admin pral apwouve ou nan kèk minit.</div>
+        </div>
       </div>
       <div class="modal-btns">
         <button class="btn-cancel" onclick="showLog()">&#8592; Retounen</button>
@@ -367,6 +383,24 @@
     </div>
   </div>
 </div>
+
+<!-- MODAL PENDING APPROVAL -->
+<div class="modal-overlay" id="modal-pending">
+  <div style="background:linear-gradient(160deg,#0d2416,#0a1a0f);border-radius:20px 20px 0 0;padding:24px 18px 36px;width:100%;max-width:480px;animation:slideUp 0.3s ease;text-align:center;">
+    <div style="font-size:50px;margin-bottom:12px;">&#9203;</div>
+    <h3 style="font-family:'Playfair Display',serif;font-size:21px;color:var(--gold-light);margin-bottom:8px;">Kont ou an Atant</h3>
+    <p style="color:rgba(255,255,255,0.6);font-size:13px;line-height:1.6;margin-bottom:16px;">Enskripsyon ou resevwa! Admin pral verifye peman ou epi apwouve kont ou a. Ou pral resevwa yon notifikasyon lè li pare.</p>
+    <div style="background:rgba(255,255,255,0.07);border-radius:12px;padding:14px;margin-bottom:16px;">
+      <div style="color:var(--gold-light);font-size:11px;font-weight:700;margin-bottom:6px;">PROCHÈN ETAP:</div>
+      <div style="color:rgba(255,255,255,0.6);font-size:12px;text-align:left;line-height:2;">
+        &#10003; Enskri fini<br>
+        &#9203; Admin ap verifye peman ou<br>
+        &#128274; Kont ou ap aktive<br>
+        &#128172; Ou ka kòmanse vann!
+      </div>
+    </div>
+    <button onclick="closeModal('pending')" style="width:100%;padding:12px;border-radius:10px;border:none;background:var(--gold);color:var(--dark);font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;cursor:pointer;">OK, Mwen Konprann</button>
+  </div>
 
 <!-- MODAL PROFILE -->
 <div class="modal-overlay" id="modal-profile">
@@ -422,8 +456,8 @@
           <h4>Peye pa:</h4>
           <div class="pay-method">
             <div class="pay-logo logo-mc">MC</div>
-            <div class="pay-info"><div class="pay-label">Moncash</div><div class="pay-num">3191-1132</div><div class="pay-name-tag">Mache Likidasyon</div></div>
-            <button class="copy-btn" onclick="copyNum('31911132','Moncash')">Kopye</button>
+            <div class="pay-info"><div class="pay-label">Moncash</div><div class="pay-num">3691-1132</div><div class="pay-name-tag">Mache Likidasyon</div></div>
+            <button class="copy-btn" onclick="copyNum('36911132','Moncash')">Kopye</button>
           </div>
           <div class="pay-method">
             <div class="pay-logo logo-nc">NC</div>
@@ -501,7 +535,7 @@ function hideLoading(){setTimeout(()=>{document.getElementById('loading').classL
 function timeStr(ts){if(!ts)return '';const d=ts.toDate?ts.toDate():new Date(ts);const now=new Date();const diff=now-d;if(diff<60000)return 'Kounye a';if(diff<3600000)return Math.floor(diff/60000)+'min';if(diff<86400000)return Math.floor(diff/3600000)+'h';return d.toLocaleDateString('fr-HT',{day:'numeric',month:'short'});}
 
 onSnapshot(query(collection(db,'products'),orderBy('createdAt','desc')),snap=>{allProducts=snap.docs.map(d=>({id:d.id,...d.data()}));document.getElementById('cnt-prod').textContent=allProducts.length;renderProducts();hideLoading();});
-onSnapshot(query(collection(db,'vendors'),orderBy('createdAt','desc')),snap=>{allVendors=snap.docs.map(d=>({id:d.id,...d.data()}));document.getElementById('cnt-vend').textContent=allVendors.length;renderVendors(allVendors);if(allVendors.length===0)seedDefaultData();if(currentUser)refreshUI();});
+onSnapshot(query(collection(db,'vendors'),orderBy('createdAt','desc')),snap=>{allVendors=snap.docs.map(d=>({id:d.id,...d.data()}));document.getElementById('cnt-vend').textContent=allVendors.filter(v=>v.status!=='pending').length;renderVendors(allVendors);if(allVendors.length===0)seedDefaultData();if(currentUser)refreshUI();});
 onSnapshot(collection(db,'users'),snap=>{allUsers=snap.docs.map(d=>({id:d.id,...d.data()}));document.getElementById('cnt-memb').textContent=allUsers.length;});
 
 async function seedDefaultData(){
@@ -653,14 +687,23 @@ window.doRegister=async function(){
   if(selectedRole==='machann'){
     const sn=document.getElementById('r-store').value.trim();const sp=document.getElementById('r-spec').value.trim();const ph=document.getElementById('r-phone').value.trim();const lo=document.getElementById('r-location').value.trim();
     if(!sn||!sp||!ph){toast('Ranpli enfomason boutik ou yo (*)');return;}
-    const vRef=await addDoc(collection(db,'vendors'),{name:sn,ownerName:name,specialty:sp,phone:ph,location:lo,username:u,verified:false,createdAt:serverTimestamp()});
+    // Save vendor as PENDING - not visible until admin approves
+    const vRef=await addDoc(collection(db,'vendors'),{name:sn,ownerName:name,specialty:sp,phone:ph,location:lo,username:u,verified:false,status:'pending',createdAt:serverTimestamp()});
     vendorId=vRef.id;
+    // Create notification for admin
+    await addDoc(collection(db,'notifications'),{type:'new_machann',vendorId:vRef.id,vendorName:sn,ownerName:name,phone:ph,read:false,createdAt:serverTimestamp()});
   }
-  const nu={name,username:u,password:p,plan:'free',role:selectedRole,vendorId,createdAt:serverTimestamp()};
+  const nu={name,username:u,password:p,plan:'free',role:selectedRole,vendorId,status:selectedRole==='machann'?'pending':'active',createdAt:serverTimestamp()};
   const ref=await addDoc(collection(db,'users'),nu);
   currentUser={id:ref.id,...nu};
-  closeModal('login');refreshUI();loadInbox();
-  toast(selectedRole==='machann'?'Bienveni machann '+name+'!':'Byenveni '+name+'!');
+  closeModal('login');
+  if(selectedRole==='machann'){
+    // Show pending modal instead of going straight in
+    openModal('pending');
+  } else {
+    refreshUI();loadInbox();
+    toast('Byenveni '+name+'!');
+  }
 };
 
 window.logout=function(){
@@ -709,11 +752,32 @@ window.filterProducts=function(){renderProducts();}
 window.filterCat=function(cat,el){activeCat=cat;document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');renderProducts();};
 
 function renderVendors(list){
+  const approved=list.filter(v=>v.status!=='pending');
+  const pending=list.filter(v=>v.status==='pending');
   const q=document.getElementById('vend-search').value;
-  document.getElementById('vend-count').textContent=q?list.length+' rezilta':'';
-  if(!list.length){document.getElementById('vend-list').innerHTML='<div style="text-align:center;padding:30px;color:#aaa;">Okenn machann poko enskri.</div>';return;}
-  document.getElementById('vend-list').innerHTML=list.map((v,i)=>{
-    // Find matching user for this vendor
+  document.getElementById('vend-count').textContent=q?approved.length+' rezilta':'';
+  let adminPanel='';
+  if(currentUser&&currentUser.role==='admin'&&pending.length>0){
+    adminPanel=`<div style="background:#fff3cd;border-radius:12px;padding:12px 14px;margin-bottom:12px;border-left:4px solid var(--gold);">
+      <div style="font-weight:700;font-size:13px;color:#856404;">⏳ ${pending.length} Machann an Atant Apwobasyon</div>
+      ${pending.map(v=>`<div style="margin-top:10px;padding:10px;background:white;border-radius:8px;">
+        <div style="font-weight:700;font-size:13px;">${v.name}</div>
+        <div style="font-size:11px;color:#888;margin:2px 0;">${v.specialty||''} · 📞 ${v.phone||''}</div>
+        <div style="font-size:10px;color:#aaa;margin-bottom:8px;">Pwopriyetè: ${v.ownerName||''}</div>
+        <div style="display:flex;gap:8px;">
+          <button onclick="approveMachann('${v.id}')" style="flex:1;background:var(--green);color:white;border:none;padding:8px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;">✓ Apwouve</button>
+          <button onclick="rejectMachann('${v.id}')" style="flex:1;background:#c0392b;color:white;border:none;padding:8px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;">✗ Rejte</button>
+        </div>
+      </div>`).join('')}
+    </div>`;
+  } else if(currentUser&&currentUser.role==='admin'){
+    adminPanel=`<div style="background:#f0f7f2;border-radius:12px;padding:12px 14px;margin-bottom:12px;border-left:4px solid var(--green);">
+      <div style="font-weight:700;font-size:13px;color:var(--green);">⚙️ Panel Admin</div>
+      <button onclick="cleanDefaultData()" style="margin-top:10px;width:100%;padding:10px;border-radius:8px;border:none;background:#c0392b;color:white;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;cursor:pointer;">🗑️ Efase Done Default yo</button>
+    </div>`;
+  }
+  if(!approved.length){document.getElementById('vend-list').innerHTML=adminPanel+'<div style="text-align:center;padding:30px;color:#aaa;">Okenn machann poko apwouve.</div>';return;}
+  document.getElementById('vend-list').innerHTML=adminPanel+approved.map((v,i)=>{
     const vendorUser=allUsers.find(u=>u.vendorId===v.id)||{id:v.id+'_fake',name:v.name,role:'machann',specialty:v.specialty};
     const canMsg=currentUser&&currentUser.id!==vendorUser.id;
     const msgBtn=canMsg?`<button class="msg-btn" onclick='openChat(${JSON.stringify(vendorUser)})'>💬 Mesaj</button>`:'';
@@ -730,6 +794,23 @@ function renderVendors(list){
     </div>`;
   }).join('');
 }
+
+window.approveMachann=async function(vendorId){
+  const {setDoc}=await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+  await updateDoc(doc(db,'vendors',vendorId),{status:'approved',verified:true});
+  // Update user status too
+  const userToUpdate=allUsers.find(u=>u.vendorId===vendorId);
+  if(userToUpdate)await updateDoc(doc(db,'users',userToUpdate.id),{status:'active'});
+  toast('✅ Machann apwouve!');
+};
+
+window.rejectMachann=async function(vendorId){
+  const {deleteDoc}=await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+  await deleteDoc(doc(db,'vendors',vendorId));
+  const userToDelete=allUsers.find(u=>u.vendorId===vendorId);
+  if(userToDelete)await deleteDoc(doc(db,'users',userToDelete.id));
+  toast('❌ Machann rejte epi efase.');
+};
 
 window.filterVendors=function(){const q=document.getElementById('vend-search').value.toLowerCase();renderVendors(allVendors.filter(v=>(v.name||'').toLowerCase().includes(q)||(v.specialty||'').toLowerCase().includes(q)));};
 
